@@ -34,7 +34,7 @@
                 };
                 websocket.onmessage = function(event) {
                     // log the event
-                    displayMessage('The response was received! ' + event.data, 'success');
+                    displayMessage('The response was received! <br/>' + event.data, 'success');
                 };
                 websocket.onerror = function(event) {
                     // log the event

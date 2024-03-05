@@ -20,10 +20,15 @@ import dev.langchain4j.chain.ConversationalRetrievalChain;
 import dev.langchain4j.memory.ChatMemory;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.cohere.CohereScoringModel;
 import dev.langchain4j.model.input.PromptTemplate;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.model.openai.OpenAiChatModelName;
+import dev.langchain4j.model.scoring.ScoringModel;
 import dev.langchain4j.rag.DefaultRetrievalAugmentor;
+import dev.langchain4j.rag.RetrievalAugmentor;
+import dev.langchain4j.rag.content.aggregator.ContentAggregator;
+import dev.langchain4j.rag.content.aggregator.ReRankingContentAggregator;
 import dev.langchain4j.rag.content.injector.DefaultContentInjector;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
 import dev.langchain4j.rag.query.router.DefaultQueryRouter;
@@ -40,10 +45,16 @@ import org.wildfly.ai.websocket.embeddings.EmbeddingStoreFactory;
 @ServerEndpoint(value = "/websocket/chatbot",
         configurator = org.wildfly.ai.websocket.CustomConfigurator.class)
 public class RagChatBot {
+    // To register and get a free API key for Cohere, please visit the following link:
+    // https://dashboard.cohere.com/welcome/register
 
+    private static final String COHERE_API_KEY = "to_be_defined";
+
+//    private static final ContentRetriever contentRetriever
+//            = EmbeddingStoreFactory.createEmbeddingStoreContentRetriever(
+//                    "/home/ehugonne/dev/AI/crawler/crawler/docs-wildfly-embedding.json");
     private static final ContentRetriever contentRetriever
-            = EmbeddingStoreFactory.createEmbeddingStoreContentRetriever(
-                    "/home/ehugonne/dev/AI/crawler/crawler/docs-wildfly-embedding.json");
+            = EmbeddingStoreFactory.createWeaviateEmbeddingStoreContentRetriever("localhost", 8090);
     private static final ChatLanguageModel model = OpenAiChatModel
             .builder()
             .apiKey("demo")
@@ -54,28 +65,54 @@ public class RagChatBot {
             .maxTokens(1000)
             .build();
 
-    private static final String  PROMPT_TEMPLATE = "You are a wildfly expert who understands well how to administrate the wildfly server and its components\n"
-                + "Objective: answer the user question delimited by  ---\n"
-                + "\n"
-                + "---\n"
-                + "{{userMessage}}\n"
-                + "---"
-                + "\n Here is a few data to help you:\n"
-                + "{{contents}}";
+    private static final String PROMPT_TEMPLATE = "You are a wildfly expert who understands well how to administrate the wildfly server and its components\n"
+            + "Objective: answer the user question delimited by  ---\n"
+            + "\n"
+            + "---\n"
+            + "{{userMessage}}\n"
+            + "---"
+            + "\n Here is a few data to help you:\n"
+            + "{{contents}}";
+
     @OnMessage
-    public String sayHello(String question, Session session) throws IOException {        
+    public String sayHello(String question, Session session) throws IOException {
         ChatMemory chatMemory = MessageWindowChatMemory.builder().id(session.getUserProperties().get("httpSessionId")).maxMessages(4).build();
         ConversationalRetrievalChain chain = ConversationalRetrievalChain.builder()
                 .chatLanguageModel(model)
                 .chatMemory(chatMemory)
-                .retrievalAugmentor(DefaultRetrievalAugmentor.builder()
-                        .contentInjector(DefaultContentInjector.builder()
-                                .promptTemplate(PromptTemplate.from(PROMPT_TEMPLATE))
-                                .build())
-                        .queryRouter(new DefaultQueryRouter(contentRetriever))
-                        .build())
+                .retrievalAugmentor(createBasicRag())
                 .build();
         return chain.execute(question).replace("\n", "<br/>");
+    }
+
+    private RetrievalAugmentor createRerankingRag() {
+        // To register and get a free API key for Cohere, please visit the following link:
+        // https://dashboard.cohere.com/welcome/register
+        ScoringModel scoringModel = CohereScoringModel.withApiKey(COHERE_API_KEY);
+
+        ContentAggregator contentAggregator = ReRankingContentAggregator.builder()
+                .scoringModel(scoringModel)
+                .minScore(0.8) // we want to present the LLM with only the truly relevant segments for the user's query
+                .build();
+
+        return DefaultRetrievalAugmentor.builder()
+                .contentRetriever(contentRetriever)
+                .contentAggregator(contentAggregator)
+                .contentInjector(DefaultContentInjector.builder()
+                        .promptTemplate(PromptTemplate.from(PROMPT_TEMPLATE))
+                        .build())
+                .queryRouter(new DefaultQueryRouter(contentRetriever))
+                .build();
+    }
+
+    private RetrievalAugmentor createBasicRag() {
+        return DefaultRetrievalAugmentor.builder()
+                .contentRetriever(contentRetriever)
+                .contentInjector(DefaultContentInjector.builder()
+                        .promptTemplate(PromptTemplate.from(PROMPT_TEMPLATE))
+                        .build())
+                .queryRouter(new DefaultQueryRouter(contentRetriever))
+                .build();
     }
 
     @OnOpen
