@@ -27,7 +27,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>        
-        <version.dev.langchain4j>0.27.1</version.dev.langchain4j>
+        <version.dev.langchain4j>0.28.0</version.dev.langchain4j>
         <version.org.junit.jupiter>5.10.2</version.org.junit.jupiter>
         <!-- the version for the Server -->
         <version.server>31.0.0.Final</version.server>
@@ -207,7 +207,7 @@
         <dependency>
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-cohere</artifactId>
-            <version>0.27.1</version>
+            <version>${version.dev.langchain4j}</version>
             <type>jar</type>
             <exclusions>
                 <exclusion>
@@ -251,6 +251,11 @@
                         <layer>cloud-server</layer>
                     </layers>
                     <name>ROOT.war</name>
+                    <packagingScripts>
+                        <scripts>
+                            <script>./src/main/resources/scripts/traces.cli</script>
+                        </scripts>
+                    </packagingScripts>
                 </configuration>
                 <executions>
                     <execution>

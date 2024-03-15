@@ -40,6 +40,7 @@ import jakarta.websocket.OnOpen;
 import jakarta.websocket.Session;
 import jakarta.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import static java.util.Arrays.asList;
 import org.wildfly.ai.websocket.embeddings.EmbeddingStoreFactory;
 
 @ServerEndpoint(value = "/websocket/chatbot",
@@ -48,7 +49,7 @@ public class RagChatBot {
     // To register and get a free API key for Cohere, please visit the following link:
     // https://dashboard.cohere.com/welcome/register
 
-    private static final String COHERE_API_KEY = "to_be_defined";
+    private static final String COHERE_API_KEY = "";
 
 //    private static final ContentRetriever contentRetriever
 //            = EmbeddingStoreFactory.createEmbeddingStoreContentRetriever(
@@ -100,6 +101,7 @@ public class RagChatBot {
                 .contentAggregator(contentAggregator)
                 .contentInjector(DefaultContentInjector.builder()
                         .promptTemplate(PromptTemplate.from(PROMPT_TEMPLATE))
+                        .metadataKeysToInclude(asList("file_name", "url", "title"))
                         .build())
                 .queryRouter(new DefaultQueryRouter(contentRetriever))
                 .build();
@@ -110,6 +112,7 @@ public class RagChatBot {
                 .contentRetriever(contentRetriever)
                 .contentInjector(DefaultContentInjector.builder()
                         .promptTemplate(PromptTemplate.from(PROMPT_TEMPLATE))
+                        .metadataKeysToInclude(asList("file_name", "url", "title"))
                         .build())
                 .queryRouter(new DefaultQueryRouter(contentRetriever))
                 .build();
