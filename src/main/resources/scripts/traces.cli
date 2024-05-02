@@ -1,2 +1,4 @@
 /subsystem=logging/logger=dev.ai4j.openai4j:add(level=TRACE)
-
+/subsystem=ai/in-memory-embedding-store=mystore:add(file=/home/ehugonne/dev/AI/crawler/crawler/wildfly-admin-embeddings.json)
+/subsystem=ai/embedding-model=myembedding:add(module=dev.langchain4j.embeddings.all-minilm-l6-v2, embedding-class=dev.langchain4j.model.embedding.AllMiniLmL6V2EmbeddingModel)
+/subsystem=ai/openai-chat-model=mychat:add(base-url="https://api.groq.com/openai/v1", api-key="${env.GROQ_API_KEY}",model-name="llama3-8b-8192")
