@@ -14,8 +14,10 @@ import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
 import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
 import dev.langchain4j.store.embedding.weaviate.WeaviateEmbeddingStore;
+import io.weaviate.client.v1.schema.model.Property;
 import java.io.File;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,13 +37,14 @@ public class EmbeddingStoreFactory {
         return embeddingStore;
     }
 
-    public static EmbeddingStoreContentRetriever createWeaviateEmbeddingStoreContentRetriever(String host, int port) {
+    public static EmbeddingStoreContentRetriever createWeaviateEmbeddingStoreContentRetriever(String host, int port, List<String> metadata) {
         EmbeddingModel embeddingModel = new AllMiniLmL6V2EmbeddingModel();
         EmbeddingStore<TextSegment> embeddingStore = WeaviateEmbeddingStore.builder()
             .scheme("http")
             .host(host)
             .port(port)
             .objectClass("MyGreatClass")
+            .metadataKeys(metadata)
             .avoidDups(true)
             .consistencyLevel("ALL")
             .build();

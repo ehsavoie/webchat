@@ -41,6 +41,7 @@ import jakarta.websocket.Session;
 import jakarta.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import static java.util.Arrays.asList;
+import java.util.Collections;
 import org.wildfly.ai.websocket.embeddings.EmbeddingStoreFactory;
 
 @ServerEndpoint(value = "/websocket/chatbot",
@@ -49,13 +50,14 @@ public class RagChatBot {
     // To register and get a free API key for Cohere, please visit the following link:
     // https://dashboard.cohere.com/welcome/register
 
-    private static final String COHERE_API_KEY = "";
+    private static final String COHERE_API_KEY = "JBfpKpgYfp5PoeGmDjOdF5mvCfwdrJILot3VxowT";
 
 //    private static final ContentRetriever contentRetriever
 //            = EmbeddingStoreFactory.createEmbeddingStoreContentRetriever(
 //                    "/home/ehugonne/dev/AI/crawler/crawler/docs-wildfly-embedding.json");
     private static final ContentRetriever contentRetriever
-            = EmbeddingStoreFactory.createWeaviateEmbeddingStoreContentRetriever("localhost", 8090);
+            = EmbeddingStoreFactory.createWeaviateEmbeddingStoreContentRetriever("localhost", 8090, Collections.emptyList()
+                /*List.of("url", "language", "parent_url", "file_name", "file_path")*/);
     private static final ChatLanguageModel model = OpenAiChatModel
             .builder()
             .apiKey("demo")
@@ -77,7 +79,7 @@ public class RagChatBot {
 
     @OnMessage
     public String sayHello(String question, Session session) throws IOException {
-        ChatMemory chatMemory = MessageWindowChatMemory.builder().id(session.getUserProperties().get("httpSessionId")).maxMessages(4).build();
+        ChatMemory chatMemory = MessageWindowChatMemory.builder().id(session.getUserProperties().get("httpSessionId")).maxMessages(3).build();
         ConversationalRetrievalChain chain = ConversationalRetrievalChain.builder()
                 .chatLanguageModel(model)
                 .chatMemory(chatMemory)
