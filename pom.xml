@@ -165,7 +165,8 @@
                     <layers>
                         <!-- layers may be used to customize the server to provision-->
                         <layer>cloud-server</layer>
-                        <layer>ai</layer>
+                        <layer>openai</layer>
+                        <layer>embeddings</layer>
                     </layers>
                     <name>ROOT.war</name>
                     <packagingScripts>
