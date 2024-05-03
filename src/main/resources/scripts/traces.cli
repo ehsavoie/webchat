@@ -1,4 +1,11 @@
 /subsystem=logging/logger=dev.ai4j.openai4j:add(level=TRACE)
-/subsystem=ai/in-memory-embedding-store=mystore:add(file=/home/ehugonne/dev/AI/crawler/crawler/wildfly-admin-embeddings.json)
 /subsystem=ai/embedding-model=myembedding:add(module=dev.langchain4j.embeddings.all-minilm-l6-v2, embedding-class=dev.langchain4j.model.embedding.AllMiniLmL6V2EmbeddingModel)
+
 /subsystem=ai/openai-chat-model=mychat:add(base-url="https://api.groq.com/openai/v1", api-key="${env.GROQ_API_KEY}",model-name="llama3-8b-8192")
+
+#Weaviate
+#podman run --rm -p 8090:8080 -p 50051:50051  -e AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED="true" -v $SOME_PATH/volumes/weaviate/_data:/data --name=weaviate cr.weaviate.io/semitechnologies/weaviate:1.24.10
+#/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=weaviate:add(host=localhost, port=8090)
+#/subsystem=ai/weaviate-embedding-store=mystore:add(socket-binding=weaviate, ssl-enabled=false, object-class=Simple)
+
+/subsystem=ai/in-memory-embedding-store=mystore:add(file=/home/ehugonne/dev/AI/crawler/crawler/wildfly-admin-embeddings.json)

@@ -167,6 +167,7 @@
                         <layer>cloud-server</layer>
                         <layer>openai</layer>
                         <layer>embeddings</layer>
+                        <!--<layer>weaviate</layer>-->
                     </layers>
                     <name>ROOT.war</name>
                     <packagingScripts>
