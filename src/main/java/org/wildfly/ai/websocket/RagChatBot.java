@@ -38,7 +38,6 @@ import static java.util.Arrays.asList;
 
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
-import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import io.smallrye.common.annotation.Identifier;
 import jakarta.inject.Inject;
@@ -56,6 +55,9 @@ public class RagChatBot {
     @Inject
     @Identifier(value = "mystore")
     EmbeddingStore embeddingStore;
+    @Inject
+    @Identifier(value = "myretriever")
+    ContentRetriever retriever;
 
     private static final String PROMPT_TEMPLATE = "You are a wildfly expert who understands well how to administrate the wildfly server and its components\n"
             + "Objective: answer the user question delimited by  ---\n"
@@ -78,19 +80,19 @@ public class RagChatBot {
     }
 
     private RetrievalAugmentor createBasicRag() {
-        ContentRetriever contentRetriever = EmbeddingStoreContentRetriever.builder()
-                .embeddingStore(embeddingStore)
-                .embeddingModel(embeddingModel)
-                .maxResults(2) // on each interaction we will retrieve the 2 most relevant segments
-                .minScore(0.5) // we want to retrieve segments at least somewhat similar to user query
-                .build();
+//        ContentRetriever contentRetriever = EmbeddingStoreContentRetriever.builder()
+//                .embeddingStore(embeddingStore)
+//                .embeddingModel(embeddingModel)
+//                .maxResults(2) // on each interaction we will retrieve the 2 most relevant segments
+//                .minScore(0.5) // we want to retrieve segments at least somewhat similar to user query
+//                .build();
         return DefaultRetrievalAugmentor.builder()
-                .contentRetriever(contentRetriever)
+                .contentRetriever(retriever)
                 .contentInjector(DefaultContentInjector.builder()
                         .promptTemplate(PromptTemplate.from(PROMPT_TEMPLATE))
-                        .metadataKeysToInclude(asList("file_name", "url", "title"))
+                        .metadataKeysToInclude(asList("file_name", "url", "title", "subtitle"))
                         .build())
-                .queryRouter(new DefaultQueryRouter(contentRetriever))
+                .queryRouter(new DefaultQueryRouter(retriever))
                 .build();
     }
 

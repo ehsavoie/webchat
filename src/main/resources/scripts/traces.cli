@@ -6,6 +6,11 @@
 #Weaviate
 #podman run --rm -p 8090:8080 -p 50051:50051  -e AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED="true" -v $SOME_PATH/volumes/weaviate/_data:/data --name=weaviate cr.weaviate.io/semitechnologies/weaviate:1.24.10
 #/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=weaviate:add(host=localhost, port=8090)
-#/subsystem=ai/weaviate-embedding-store=mystore:add(socket-binding=weaviate, ssl-enabled=false, object-class=Simple)
+#/subsystem=ai/weaviate-embedding-store=mystore:add(socket-binding=weaviate, ssl-enabled=false, object-class=Simple, metadata=[url,language,parent_url,file_name,file_path,title,subtitle])
+#/subsystem=logging/logger=io.weaviate.client.client:add(level=TRACE)
 
 /subsystem=ai/in-memory-embedding-store=mystore:add(file=/home/ehugonne/dev/AI/crawler/crawler/wildfly-admin-embeddings.json)
+
+
+/subsystem=ai/embedding-store-content-retriever=myretriever:add(embedding-model=myembedding,embedding-store=mystore, max-results=2, min-score=0.7)
+#/subsystem=ai/web-search-content-retriever=myretriever:add(tavily={api-key=${env.TAVILY_API_KEY}, base-url=https://api.tavily.com, connect-timeout=20000, exclude-domains=[example.org], include-domains=[example.com], include-answer=true})
