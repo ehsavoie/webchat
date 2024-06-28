@@ -33,7 +33,6 @@
                     displayMessage('Connection is now open. Type a name and click Say Hello to send a message.');
                 };
                 websocket.onmessage = function(event) {
-                    // log the event
                     displayMessage('The response was received! <br/>' + event.data, 'success');
                 };
                 websocket.onerror = function(event) {
@@ -41,8 +40,8 @@
                     displayMessage('Error! ' + event.data, 'error');
                 };
                 websocket.onclose = function(event) {
-                    displayStatus('Closed ' + event.reason);
-                    displayMessage('The connection was closed or timed out. Please click the Open Connection button to reconnect.');
+                    displayStatus('Closed ' + event.reason + ' ' + new Date().toISOString());
+                    displayMessage('The connection was closed or timed out. Please click the Open Connection button to reconnect.')
                     document.getElementById('sayHello').disabled = true;
                 };
             }

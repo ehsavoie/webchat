@@ -162,19 +162,27 @@
                             <location>org.wildfly:wildfly-ai-galleon-pack:1.0.0-SNAPSHOT</location>
                         </feature-pack>
                     </feature-packs>
+<!--                    <channels>
+                        <channel>
+                            <manifest>
+                                <url>file:///home/ehugonne/dev/undertow/undertow-2.3.13.Final-manifest.yaml</url>
+                            </manifest>
+                        </channel>
+                    </channels>-->
                     <layers>
                         <!-- layers may be used to customize the server to provision-->
                         <layer>cloud-server</layer>
-                        <layer>openai</layer>
+                        <layer>ollama</layer>
                         <layer>embeddings</layer>
+                        <!--<layer>openai</layer>
                         <layer>weaviate</layer>
-                        <layer>web-search-engines</layer>
+                        <layer>web-search-engines</layer>-->
                     </layers>
                     <name>ROOT.war</name>
                     <packagingScripts>
                         <packaging-script>
                             <scripts>
-                                <script>./src/main/resources/scripts/traces.cli</script>
+                                <script>./src/main/resources/scripts/configure_llm.cli</script>
                             </scripts>
                         </packaging-script>
                     </packagingScripts>

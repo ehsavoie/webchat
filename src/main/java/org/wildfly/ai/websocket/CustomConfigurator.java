@@ -18,12 +18,10 @@ public class CustomConfigurator extends ServerEndpointConfig.Configurator {
     public void modifyHandshake(ServerEndpointConfig conf,
                                 HandshakeRequest req,
                                 HandshakeResponse resp) {
-        System.out.println("Session : "  + req.getHttpSession());
         if( req.getHttpSession() != null) {
             System.out.println("Session : "  + ((HttpSession)req.getHttpSession()).getId());
             conf.getUserProperties().put("httpSessionId", ((HttpSession)req.getHttpSession()).getId());
         }
-        super.modifyHandshake(conf, req, resp);
     }
 
 }

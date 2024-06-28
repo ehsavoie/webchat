@@ -1,0 +1,38 @@
+/subsystem=logging/logger=dev.ai4j.openai4j:add(level=TRACE)
+/subsystem=logging/logger=dev.langchain4j.model.ollama:add(level=TRACE)
+/subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=read-timeout, value=0)
+/subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=write-timeout, value=0)
+
+###Embedding Models
+# Adding the SentenceTransformers all-MiniLM-L6-v2 EmbeddingModel that runs within the server JVM.
+/subsystem=ai/embedding-model=myembedding:add(module=dev.langchain4j.embeddings.all-minilm-l6-v2, embedding-class=dev.langchain4j.model.embedding.AllMiniLmL6V2EmbeddingModel)
+
+# Adding an Ollama EmbeddingModel connecting to http://192.168.1.11:11434 using the model llama3:8b.
+#/subsystem=ai/ollama-embedding-model=test:add(base-url="http://192.168.1.11:11434", model-name="llama3:8b")
+
+###Chat Language Models
+# Adding an OpenAI REST ChatLanguageModel connecting to Groq using the model llama3-8b-8192.
+#/subsystem=ai/openai-chat-model=mychat:add(base-url="https://api.groq.com/openai/v1", api-key="${env.GROQ_API_KEY}",model-name="llama3-8b-8192")
+
+# Adding an Ollama ChatLanguageModel connecting to http://127.0.0.1:11434 using the model llama3:8b.
+/subsystem=ai/ollama-chat-model=mychat:add(model-name="llama3:8b", base-url="http://127.0.0.1:11434", log-requests="true", log-responses="true", temperature="0.9")
+
+###Embedding Stores
+
+# Adding Weaviate as an embedding store
+# podman run --rm -p 8090:8080 -p 50051:50051  -e AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED="true" -v $SOME_PATH/volumes/weaviate/_data:/data --name=weaviate cr.weaviate.io/semitechnologies/weaviate:1.24.10
+#/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=weaviate:add(host=localhost, port=8090)
+#/subsystem=ai/weaviate-embedding-store=mystore:add(socket-binding=weaviate, ssl-enabled=false, object-class=Simple, metadata=[url,language,parent_url,file_name,file_path,title,subtitle])
+#/subsystem=logging/logger=io.weaviate.client.client:add(level=TRACE)
+
+# Adding in memory embedding store loading form a json file
+/subsystem=ai/in-memory-embedding-store=mystore:add(file=/home/ehugonne/dev/AI/crawler/crawler/wildfly-admin-embeddings.json)
+
+
+###Content retrievers
+
+# Adding a content retriever using embeddings
+/subsystem=ai/embedding-store-content-retriever=myretriever:add(embedding-model=myembedding,embedding-store=mystore, max-results=2, min-score=0.7)
+
+# Adding a content retriever using Tavily search engine
+#/subsystem=ai/web-search-content-retriever=myretriever:add(tavily={api-key=${env.TAVILY_API_KEY}, base-url=https://api.tavily.com, connect-timeout=20000, exclude-domains=[example.org], include-domains=[example.com], include-answer=true})arch-content-retriever=myretriever:add(tavily={api-key=${env.TAVILY_API_KEY}, base-url=https://api.tavily.com, connect-timeout=20000, exclude-domains=[example.org], include-domains=[example.com], include-answer=true})

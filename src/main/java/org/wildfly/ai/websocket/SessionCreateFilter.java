@@ -22,8 +22,10 @@ public class SessionCreateFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
-         HttpServletRequest request = (HttpServletRequest) req;
-        System.out.println("Session created " + request.getSession().getId());
+        HttpServletRequest request = (HttpServletRequest) req;
+        if (request.getSession(false) == null) {
+            System.out.println("Session created " + request.getSession().getId());
+        }
         chain.doFilter(req, resp);
     }
 }
