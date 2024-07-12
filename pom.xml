@@ -25,14 +25,14 @@
     <packaging>war</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>        
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>        
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jakartaee>10.0.0</jakartaee>
         <version.wildfly.maven.plugin>5.0.0.Final</version.wildfly.maven.plugin>
-        <version.wildfly.bom>32.0.0.Final</version.wildfly.bom>
-        <version.dev.langchain4j>0.32.0</version.dev.langchain4j>
-        <version.io.smallrye.smallrye-common>2.4.0</version.io.smallrye.smallrye-common>
+        <version.wildfly.bom>33.0.0.Final</version.wildfly.bom>
+        <version.dev.langchain4j>0.35.0</version.dev.langchain4j>
+        <version.io.smallrye.llm>0.0.1</version.io.smallrye.llm>
         <version.compiler.plugin>3.13.0</version.compiler.plugin>
         <version.war.plugin>3.4.0</version.war.plugin>
     </properties>
@@ -108,9 +108,15 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>io.smallrye.common</groupId>
-            <artifactId>smallrye-common-annotation</artifactId>
-            <version>${version.io.smallrye.smallrye-common}</version>
+            <groupId>io.smallrye.llm</groupId>
+            <artifactId>smallrye-llm-langchain4j-core</artifactId>
+            <version>${version.io.smallrye.llm}</version>
+            <scope>provided</scope>
+        </dependency>
+         <dependency>
+            <groupId>io.smallrye.llm</groupId>
+            <artifactId>smallrye-llm-langchain4j-portable-extension</artifactId>
+            <version>${version.io.smallrye.llm}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
