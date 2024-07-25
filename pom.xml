@@ -30,7 +30,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jakartaee>10.0.0</jakartaee>
         <version.wildfly.maven.plugin>5.0.0.Final</version.wildfly.maven.plugin>
-        <version.wildfly.bom>32.0.0.Final</version.wildfly.bom>
+        <version.wildfly.bom>34.0.0.Beta1-SNAPSHOT</version.wildfly.bom>
         <version.dev.langchain4j>0.32.0</version.dev.langchain4j>
         <version.io.smallrye.smallrye-common>2.4.0</version.io.smallrye.smallrye-common>
         <version.compiler.plugin>3.13.0</version.compiler.plugin>
