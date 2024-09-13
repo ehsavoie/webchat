@@ -6,9 +6,10 @@ package org.wildfly.ai.websocket;
 
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
-import org.wildfly.ai.annotations.RegisterAIService;
+import io.smallrye.llm.spi.RegisterAIService;
+import jakarta.enterprise.context.SessionScoped;
 
-@RegisterAIService(chatLanguageModelName = "mychat", tools = {org.wildfly.ai.websocket.Calculator.class})
+@RegisterAIService(chatLanguageModelName = "mychat", tools = {org.wildfly.ai.websocket.Calculator.class}, scope = SessionScoped.class)
 public interface SimpleAIService {
     @SystemMessage("""
                    You are an AI named Bob answering general question.

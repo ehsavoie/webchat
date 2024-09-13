@@ -32,7 +32,7 @@
         <version.wildfly.maven.plugin>5.0.0.Final</version.wildfly.maven.plugin>
         <version.wildfly.bom>33.0.0.Final</version.wildfly.bom>
         <version.dev.langchain4j>0.32.0</version.dev.langchain4j>
-        <version.io.smallrye.smallrye-common>2.4.0</version.io.smallrye.smallrye-common>
+        <version.io.smallrye.llm>1.0.0-SNAPSHOT</version.io.smallrye.llm>
         <version.compiler.plugin>3.13.0</version.compiler.plugin>
         <version.war.plugin>3.4.0</version.war.plugin>
     </properties>
@@ -108,15 +108,15 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.wildfly</groupId>
-            <artifactId>wildfly-ai-annotations</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <groupId>io.smallrye.llm</groupId>
+            <artifactId>smallrye-llm-langchain4j-core</artifactId>
+            <version>${version.io.smallrye.llm}</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>io.smallrye.common</groupId>
-            <artifactId>smallrye-common-annotation</artifactId>
-            <version>${version.io.smallrye.smallrye-common}</version>
+         <dependency>
+            <groupId>io.smallrye.llm</groupId>
+            <artifactId>smallrye-llm-langchain4j-portable-extension</artifactId>
+            <version>${version.io.smallrye.llm}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

@@ -25,8 +25,10 @@ public class ChatResource {
     public String chatWithAssistant(@QueryParam("question") String question) {
         String answer;
         try {
+            System.out.println("Weld Proxy " + aiService);
             answer = aiService.chat(question);
         } catch (Exception e) {
+            e.printStackTrace();
             answer = "My failure reason is:\n\n" + e.getMessage();
         }
         return answer;

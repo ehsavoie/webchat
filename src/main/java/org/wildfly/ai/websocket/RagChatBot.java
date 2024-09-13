@@ -37,9 +37,9 @@ import java.io.IOException;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
 import dev.langchain4j.store.embedding.EmbeddingStore;
-import io.smallrye.common.annotation.Identifier;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 @ServerEndpoint(value = "/websocket/chatbot",
         configurator = org.wildfly.ai.websocket.CustomConfigurator.class)
@@ -47,16 +47,16 @@ public class RagChatBot {
 
 
     @Inject
-    @Identifier(value = "mychat")
+    @Named(value = "mychat")
     ChatLanguageModel chatModel;
     @Inject
-    @Identifier(value = "myembedding")
+    @Named(value = "myembedding")
     EmbeddingModel embeddingModel;
     @Inject
-    @Identifier(value = "mystore")
+    @Named(value = "mystore")
     EmbeddingStore embeddingStore;
     @Inject
-    @Identifier(value = "myretriever")
+    @Named(value = "myretriever")
     ContentRetriever retriever;
     
     RetrievalAugmentor augmentor;
