@@ -13,11 +13,11 @@
 
 ###Chat Language Models
 # Adding an OpenAI REST ChatLanguageModel connecting to Groq using the model llama3-8b-8192.
-#/subsystem=ai/openai-chat-model=mychat:add(base-url="https://api.groq.com/openai/v1", api-key="${env.GROQ_API_KEY}", log-requests="true", log-responses="true", model-name="llama3-8b-8192")
+/subsystem=ai/openai-chat-model=mychat:add(base-url="https://api.groq.com/openai/v1", api-key="${env.GROQ_API_KEY}", log-requests="true", log-responses="true", model-name="llama3-8b-8192")
 
 # Adding an Ollama ChatLanguageModel connecting to http://127.0.0.1:11434 using the model llama3:8b.
 #/subsystem=ai/ollama-chat-model=mychat:add(model-name="llama3.1:8b", base-url="http://127.0.0.1:11434", log-requests="true", log-responses="true", temperature="0.9")
-/subsystem=ai/ollama-chat-model=mychat:add(model-name="mistral", base-url="http://127.0.0.1:11434", log-requests="true", log-responses="true", temperature="0.9")
+#/subsystem=ai/ollama-chat-model=mychat:add(model-name="mistral", base-url="http://127.0.0.1:11434", log-requests="true", log-responses="true", temperature="0.9")
 #/subsystem=ai/openai-chat-model=mychat:add(base-url="https://api.groq.com/openai/v1", api-key="${env.GROQ_API_KEY}",model-name="llama3:8b")
 
 ###Embedding Stores
