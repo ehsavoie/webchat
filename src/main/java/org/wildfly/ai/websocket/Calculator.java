@@ -4,7 +4,7 @@
  */
 package org.wildfly.ai.websocket;
 
-import dev.langchain4j.agent.tool.Tool;
+import org.eclipse.microprofile.ai.llm.Tool;
 
 public class Calculator {
 

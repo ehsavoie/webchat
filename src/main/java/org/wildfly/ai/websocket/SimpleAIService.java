@@ -4,9 +4,9 @@
  */
 package org.wildfly.ai.websocket;
 
-import dev.langchain4j.service.SystemMessage;
-import dev.langchain4j.service.UserMessage;
-import io.smallrye.llm.spi.RegisterAIService;
+import org.eclipse.microprofile.ai.llm.SystemMessage;
+import org.eclipse.microprofile.ai.llm.UserMessage;
+import org.eclipse.microprofile.ai.llm.RegisterAIService;
 import jakarta.enterprise.context.SessionScoped;
 
 @RegisterAIService(chatLanguageModelName = "mychat", tools = {org.wildfly.ai.websocket.Calculator.class}, scope = SessionScoped.class)
