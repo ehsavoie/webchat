@@ -30,7 +30,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jakartaee>10.0.0</jakartaee>
         <version.wildfly.maven.plugin>5.0.0.Final</version.wildfly.maven.plugin>
-        <version.wildfly.bom>33.0.0.Final</version.wildfly.bom>
+        <version.wildfly.bom>34.0.0.Final</version.wildfly.bom>
         <version.dev.langchain4j>0.35.0</version.dev.langchain4j>
         <version.io.smallrye.llm>0.0.1</version.io.smallrye.llm>
         <version.compiler.plugin>3.13.0</version.compiler.plugin>
@@ -113,7 +113,7 @@
             <version>${version.io.smallrye.llm}</version>
             <scope>provided</scope>
         </dependency>
-         <dependency>
+        <dependency>
             <groupId>io.smallrye.llm</groupId>
             <artifactId>smallrye-llm-langchain4j-portable-extension</artifactId>
             <version>${version.io.smallrye.llm}</version>
@@ -168,27 +168,32 @@
                             <location>org.wildfly:wildfly-ai-galleon-pack:1.0.0-SNAPSHOT</location>
                         </feature-pack>
                     </feature-packs>
-<!--                    <channels>
-                        <channel>
-                            <manifest>
-                                <url>file:///home/ehugonne/dev/undertow/undertow-2.3.13.Final-manifest.yaml</url>
-                            </manifest>
-                        </channel>
-                    </channels>-->
                     <layers>
                         <!-- layers may be used to customize the server to provision-->
                         <layer>cloud-server</layer>
-                        <layer>ollama</layer>
-                        <layer>embeddings</layer>
-                        <!--<layer>openai</layer>
-                        <layer>weaviate</layer>
-                        <layer>web-search-engines</layer>-->
+                        <layer>ollama-chat-model</layer>
+                        <layer>default-embedding-content-retriever</layer>
+                        <!-- providing the following layers -->
+                        <!--
+                        <layer>in-memory-embedding-model-all-minilm-l6-v2</layer>
+                        <layer>in-memory-embedding-store</layer>
+                        -->
+                        <!-- Exisiting layers thart can be used -->
+                        <!--
+                        <layer>ollama-embedding-model</layer>
+                        <layer>openai-chat-model</layer>
+                        <layer>weaviate-embedding-store</layer>
+                        <layer>web-search-engines</layer>
+                        -->
                     </layers>
                     <name>ROOT.war</name>
+                    <extraServerContentDirs>
+                        <extraServerContentDir>extra-content</extraServerContentDir>
+                    </extraServerContentDirs>
                     <packagingScripts>
                         <packaging-script>
                             <scripts>
-                                <script>./src/main/resources/scripts/configure_llm.cli</script>
+                                <script>./src/scripts/configure_llm.cli</script>
                             </scripts>
                         </packaging-script>
                     </packagingScripts>
