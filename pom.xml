@@ -178,20 +178,23 @@
                     <layers>
                         <!-- layers may be used to customize the server to provision-->
                         <layer>cloud-server</layer>
-                        <layer>ollama</layer>
-                        <layer>embeddings</layer>
+                        <layer>ollama-chat-model</layer>
+                        <layer>in-memory-embedding-model</layer>
+                        <layer>in-memory-embedding-store</layer>
+                        <layer>in-memory-embedding-store</layer>
+                        <layer>embedding-content-retriever</layer>
                         <!--<layer>openai</layer>
                         <layer>weaviate</layer>
                         <layer>web-search-engines</layer>-->
                     </layers>
                     <name>ROOT.war</name>
-                    <packagingScripts>
+<!--                    <packagingScripts>
                         <packaging-script>
                             <scripts>
                                 <script>./src/main/resources/scripts/configure_llm.cli</script>
                             </scripts>
                         </packaging-script>
-                    </packagingScripts>
+                    </packagingScripts>-->
                 </configuration>
                 <executions>
                     <execution>
