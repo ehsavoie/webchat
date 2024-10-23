@@ -188,13 +188,16 @@
                         <layer>web-search-engines</layer>-->
                     </layers>
                     <name>ROOT.war</name>
-<!--                    <packagingScripts>
+                    <extraServerContentDirs>
+                        <extraServerContentDir>extra-content</extraServerContentDir>
+                    </extraServerContentDirs>
+                    <packagingScripts>
                         <packaging-script>
                             <scripts>
-                                <script>./src/main/resources/scripts/configure_llm.cli</script>
+                                <script>./src/scripts/configure_llm.cli</script>
                             </scripts>
                         </packaging-script>
-                    </packagingScripts>-->
+                    </packagingScripts>
                 </configuration>
                 <executions>
                     <execution>
