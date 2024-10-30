@@ -182,6 +182,7 @@
                         <!--
                         <layer>ollama-embedding-model</layer>
                         <layer>openai-chat-model</layer>
+                        <layer>mistral-ai-chat-model</layer>
                         <layer>weaviate-embedding-store</layer>
                         <layer>web-search-engines</layer>
                         -->
