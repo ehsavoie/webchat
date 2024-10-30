@@ -47,16 +47,16 @@ public class RagChatBot {
 
 
     @Inject
-    @Named(value = "mychat")
+    @Named(value = "ollama")
     ChatLanguageModel chatModel;
     @Inject
-    @Named(value = "myembedding")
+    @Named(value = "all-minilm-l6-v2")
     EmbeddingModel embeddingModel;
     @Inject
-    @Named(value = "mystore")
+    @Named(value = "in-memory")
     EmbeddingStore embeddingStore;
     @Inject
-    @Named(value = "myretriever")
+    @Named(value = "embedding-store-retriever")
     ContentRetriever retriever;
     
     RetrievalAugmentor augmentor;
