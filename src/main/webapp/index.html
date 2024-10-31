@@ -30,7 +30,7 @@
                 websocket.onopen = function() {
                     displayStatus('Open');
                     document.getElementById('sayHello').disabled = false;
-                    displayMessage('Connection is now open. Type a name and click Say Hello to send a message.');
+                    displayMessage('Connection is now open. Type a question and click Ask Question to send a message.');
                 };
                 websocket.onmessage = function(event) {
                     displayMessage('The response was received! <br/>' + event.data, 'success');
@@ -60,6 +60,7 @@
                 if (websocket !== null) {
                     var content = document.getElementById('name').value;
                     websocket.send(content);
+                    displayMessage('Question sent.');
                 } else {
                     displayMessage('WebSocket connection is not established. Please click the Open Connection button.', 'error');
                 }
