@@ -25,7 +25,7 @@
 
     <groupId>org.wildfly.ai</groupId>
     <artifactId>webchat</artifactId>
-    <version>0.1.0</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>war</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -52,7 +52,7 @@
         <connection>scm:git:git@github.com:ehsavoie/webchat.git</connection>
         <developerConnection>scm:git:git@github.com:ehsavoie/webchat.git</developerConnection>
         <url>https://github.com/ehsavoie/webchat</url>
-      <tag>0.1.0</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <repositories>
