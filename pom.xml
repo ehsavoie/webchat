@@ -15,8 +15,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
      <parent>
         <groupId>org.jboss</groupId>
@@ -26,7 +25,7 @@
 
     <groupId>org.wildfly.ai</groupId>
     <artifactId>webchat</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>0.1.0</version>
     <packaging>war</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -53,7 +52,8 @@
         <connection>scm:git:git@github.com:ehsavoie/webchat.git</connection>
         <developerConnection>scm:git:git@github.com:ehsavoie/webchat.git</developerConnection>
         <url>https://github.com/ehsavoie/webchat</url>
-    </scm>
+      <tag>0.1.0</tag>
+  </scm>
 
     <repositories>
         <repository>
@@ -150,7 +150,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${version.compiler.plugin}</version>
-                <configuration></configuration>
+                <configuration />
             </plugin>
 
             <!--Build configuration for the WAR plugin: -->
