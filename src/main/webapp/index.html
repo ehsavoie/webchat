@@ -31,6 +31,7 @@
                     displayStatus('Open');
                     document.getElementById('sayHello').disabled = false;
                     displayMessage('Connection is now open. Type a question and click Ask Question to send a message.');
+                    displayMessage('For example you can ask: "How do you configure a connection factory to a remote Artemis server ?".');
                 };
                 websocket.onmessage = function(event) {
                     displayMessage('The response was received! <br/>' + event.data, 'success');
