@@ -53,7 +53,7 @@ public class RagChatBot {
     @Named(value = "all-minilm-l6-v2")
     EmbeddingModel embeddingModel;
     @Inject
-    @Named(value = "in-memory")
+    @Named(value = "neo4j")
     EmbeddingStore embeddingStore;
     @Inject
     @Named(value = "embedding-store-retriever")

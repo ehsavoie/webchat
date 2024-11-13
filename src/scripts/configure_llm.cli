@@ -6,8 +6,7 @@
 
 ###Embedding Models
 # Adding the SentenceTransformers all-MiniLM-L6-v2 EmbeddingModel that runs within the server JVM.
-#/subsystem=ai/embedding-model=myembedding:add(module=dev.langchain4j.embeddings.all-minilm-l6-v2, embedding-class=dev.langchain4j.model.embedding.onnx.allminilml6v2.AllMiniLmL6V2EmbeddingModel)
-
+#/subsystem=ai/embedding-model=all-minilm-l6-v2:add(module=dev.langchain4j.embeddings.all-minilm-l6-v2, embedding-class=dev.langchain4j.model.embedding.onnx.allminilml6v2.AllMiniLmL6V2EmbeddingModel)
 
 # Adding an Ollama EmbeddingModel connecting to http://192.168.1.11:11434 using the model llama3:8b.
 #/subsystem=ai/ollama-embedding-model=test:add(base-url="http://192.168.1.11:11434", model-name="llama3:8b")
@@ -42,6 +41,7 @@
 
 # Adding a content retriever using embeddings
 #/subsystem=ai/embedding-store-content-retriever=myretriever:add(embedding-model=myembedding,embedding-store=mystore, max-results=2, min-score=0.7)
+/subsystem=ai/embedding-store-content-retriever=embedding-store-retriever:add(embedding-model=all-minilm-l6-v2, embedding-store=neo4j, max-results=2, min-score=0.7)
 
 # Adding a content retriever using Tavily search engine
 #/subsystem=ai/web-search-content-retriever=myretriever:add(tavily={api-key=${env.TAVILY_API_KEY}, base-url=https://api.tavily.com, connect-timeout=20000, exclude-domains=[example.org], include-domains=[example.com], include-answer=true})

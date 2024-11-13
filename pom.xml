@@ -21,7 +21,7 @@
      <parent>
         <groupId>org.jboss</groupId>
         <artifactId>jboss-parent</artifactId>
-        <version>46</version>
+        <version>47</version>
     </parent>
 
     <groupId>org.wildfly.ai</groupId>
@@ -181,8 +181,9 @@
                     <layers>
                         <!-- layers may be used to customize the server to provision-->
                         <layer>cloud-server</layer>
+                        <layer>in-memory-embedding-model-all-minilm-l6-v2</layer>
                         <layer>ollama-chat-model</layer>
-                        <layer>default-embedding-content-retriever</layer>
+                        <layer>neo4j-embedding-store</layer>
                         <!-- providing the following layers -->
                         <!--
                         <layer>in-memory-embedding-model-all-minilm-l6-v2</layer>
