@@ -175,7 +175,7 @@
                             <location>org.wildfly:wildfly-galleon-pack:${version.wildfly.bom}</location>
                         </feature-pack>
                         <feature-pack>
-                            <location>org.wildfly:wildfly-ai-galleon-pack:0.1.0</location>
+                            <location>org.wildfly:wildfly-ai-galleon-pack:1.0.0-SNAPSHOT</location>
                         </feature-pack>
                     </feature-packs>
                     <layers>
