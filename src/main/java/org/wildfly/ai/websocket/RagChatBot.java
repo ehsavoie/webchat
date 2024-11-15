@@ -34,9 +34,7 @@ import jakarta.websocket.Session;
 import jakarta.websocket.server.ServerEndpoint;
 import java.io.IOException;
 
-import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
-import dev.langchain4j.store.embedding.EmbeddingStore;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -50,15 +48,9 @@ public class RagChatBot {
     @Named(value = "ollama")
     ChatLanguageModel chatModel;
     @Inject
-    @Named(value = "all-minilm-l6-v2")
-    EmbeddingModel embeddingModel;
-    @Inject
-    @Named(value = "in-memory")
-    EmbeddingStore embeddingStore;
-    @Inject
     @Named(value = "embedding-store-retriever")
     ContentRetriever retriever;
-    
+
     RetrievalAugmentor augmentor;
 
     private static final String PROMPT_TEMPLATE = "You are a WildFly expert who understands well how to administrate the WildFly server and its components\n"
@@ -72,12 +64,6 @@ public class RagChatBot {
 
     @PostConstruct
     public void createBasicRag() {
-//        ContentRetriever contentRetriever = EmbeddingStoreContentRetriever.builder()
-//                .embeddingStore(embeddingStore)
-//                .embeddingModel(embeddingModel)
-//                .maxResults(2) // on each interaction we will retrieve the 2 most relevant segments
-//                .minScore(0.5) // we want to retrieve segments at least somewhat similar to user query
-//                .build();
         augmentor = DefaultRetrievalAugmentor.builder()
                 .contentRetriever(retriever)
                 .contentInjector(DefaultContentInjector.builder()

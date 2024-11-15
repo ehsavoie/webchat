@@ -21,7 +21,7 @@
      <parent>
         <groupId>org.jboss</groupId>
         <artifactId>jboss-parent</artifactId>
-        <version>46</version>
+        <version>47</version>
     </parent>
 
     <groupId>org.wildfly.ai</groupId>
@@ -175,7 +175,7 @@
                             <location>org.wildfly:wildfly-galleon-pack:${version.wildfly.bom}</location>
                         </feature-pack>
                         <feature-pack>
-                            <location>org.wildfly:wildfly-ai-galleon-pack:1.0.0-SNAPSHOT</location>
+                            <location>org.wildfly:wildfly-ai-feature-pack:0.2.0</location>
                         </feature-pack>
                     </feature-packs>
                     <layers>
