@@ -58,7 +58,7 @@ You need to include the WildFly AI feature-pack and layers in the Maven Plugin c
 
 ##  Building and running the example application
 
-You build using Apache Maven with the folloxing command:
+You build using Apache Maven with the following command:
 
 ```shell
 mvn clean install
@@ -71,3 +71,4 @@ You can interact with the application using:
 * [What is the best sci-fi movie ?](http://localhost:8080/rest/service/chat?question=What%20is%20the%20best%20sci-fi%20movie)
 * [What is the square root of the sum of the numbers of letters in the words hello and world ?](http://localhost:8080/rest/service/chat?question=What%20is%20the%20square%20root%20of%20the%20sum%20of%20the%20numbers%20of%20letters%20in%20the%20words%20hello%20and%20world)
 * A simple webchat interface for [RAG](http://localhost:8080/) using WildFly documentation. 
+You can ask question that the RAG will try to answer like: **"How do you configure a connection factory to a remote Artemis server ?"**.
