@@ -182,7 +182,7 @@
                     <layers>
                         <!-- layers may be used to customize the server to provision-->
                         <layer>cloud-server</layer>
-                        <layer>ollama-chat-model</layer>
+                        <layer>mistral-ai-chat-model</layer>
                         <layer>default-embedding-content-retriever</layer>
                         <!-- providing the following layers -->
                         <!--

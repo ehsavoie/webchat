@@ -45,7 +45,7 @@ public class RagChatBot {
 
 
     @Inject
-    @Named(value = "ollama")
+    @Named(value = "mistral")
     ChatLanguageModel chatModel;
     @Inject
     @Named(value = "embedding-store-retriever")
@@ -68,7 +68,6 @@ public class RagChatBot {
                 .contentRetriever(retriever)
                 .contentInjector(DefaultContentInjector.builder()
                         .promptTemplate(PromptTemplate.from(PROMPT_TEMPLATE))
-//                        .metadataKeysToInclude(asList("file_name", "url", "title", "subtitle"))
                         .build())
                 .queryRouter(new DefaultQueryRouter(retriever))
                 .build();
