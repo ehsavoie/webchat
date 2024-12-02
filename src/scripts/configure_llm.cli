@@ -24,6 +24,8 @@
 #/subsystem=ai/ollama-chat-model=mychat:add(model-name="llama3.1:8b", base-url="http://127.0.0.1:11434", log-requests="true", log-responses="true", temperature="0.9")
 #/subsystem=ai/ollama-chat-model=mychat:add(model-name="mistral", base-url="http://127.0.0.1:11434", log-requests="true", log-responses="true", temperature="0.9")
 #/subsystem=ai/openai-chat-model=mychat:add(base-url="https://api.groq.com/openai/v1", api-key="${env.GROQ_API_KEY}",model-name="llama3:8b")
+#/subsystem=ai/openai-chat-model=vllama:add(base-url="https://api.groq.com/openai/v1", api-key="${env.GROQ_API_KEY}",model-name="llama-3.2-11b-vision-preview")
+#/subsystem=ai/ollama-chat-model=vllama:add(model-name="llama3.2-vision:11b", base-url="http://127.0.0.1:11434", log-requests="true", log-responses="true")
 
 
 ###Embedding Stores

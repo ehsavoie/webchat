@@ -1,0 +1,77 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Welcome to WildFly AI Image page!</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="resources/css/hello.css" />
+        <script>
+            window.onload = function() {
+                var dropbox = document.getElementById("dropbox");
+                dropbox.addEventListener("dragenter", noop, false);
+                dropbox.addEventListener("dragexit", noop, false);
+                dropbox.addEventListener("dragover", noop, false);
+                dropbox.addEventListener("drop", dropUpload, false);
+            }
+
+            function noop(event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+
+            function dropUpload(event) {
+                noop(event);
+                var files = event.dataTransfer.files;
+
+                for (var i = 0; i < files.length; i++) {
+                    upload(files[i]);
+                }
+            }
+
+            function upload(file) {
+                document.getElementById("status").innerHTML = "Uploading " + file.name;
+
+                var formData = new FormData();
+                formData.append("file", file);
+
+                var xhr = new XMLHttpRequest();
+                xhr.upload.addEventListener("progress", uploadProgress, false);
+                xhr.addEventListener("load", uploadComplete, false);
+                xhr.open("POST", "uploadServlet", true); // If async=false, then you'll miss progress bar support.
+                xhr.send(formData);
+            }
+
+            function uploadProgress(event) {
+                // Note: doesn't work with async=false.
+                var progress = Math.round(event.loaded / event.total * 100);
+                document.getElementById("status").innerHTML = "Progress " + progress + "%";
+            }
+
+            function uploadComplete(event) {
+                document.getElementById("status").innerHTML = event.target.responseText;
+            }
+        </script>
+        <style>
+            #dropbox {
+                width: 300px;
+                height: 200px;
+                border: 1px solid gray;
+                border-radius: 5px;
+                padding: 5px;
+                color: gray;
+            }
+        </style>
+    </head>
+    <body>
+         <h1>Welcome to WildFly AI Image page!</h1>
+         <div>With GROQ you can set <pre>export OPENAI_CHAT_MODEL_NAME=llama-3.2-11b-vision-preview</pre>.</div>
+         <div>With Ollama you can set <pre>
+            export OLLAMA_CHAT_MODEL_NAME=llama3.2-vision:11b
+            podman exec -it ollama ollama run llama3.2-vision:11b
+          </pre>.</div>
+        <div id="dropbox">Drag and drop a file here...</div>
+        <div id="status"></div>
+    </body>
+</html>
