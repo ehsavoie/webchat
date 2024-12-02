@@ -182,7 +182,7 @@
                     <layers>
                         <!-- layers may be used to customize the server to provision-->
                         <layer>cloud-server</layer>
-                        <layer>ollama-chat-model</layer>
+                        <layer>openai-chat-model</layer>
                         <layer>default-embedding-content-retriever</layer>
                         <!-- providing the following layers -->
                         <!--
@@ -192,7 +192,7 @@
                         <!-- Exisiting layers thart can be used -->
                         <!--
                         <layer>ollama-embedding-model</layer>
-                        <layer>openai-chat-model</layer>
+                        <layer>ollama-chat-model</layer>
                         <layer>mistral-ai-chat-model</layer>
                         <layer>weaviate-embedding-store</layer>
                         <layer>web-search-engines</layer>

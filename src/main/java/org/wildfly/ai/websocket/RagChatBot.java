@@ -22,9 +22,7 @@ import jakarta.websocket.Session;
 import jakarta.websocket.server.ServerEndpoint;
 import java.io.IOException;
 
-import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
-import dev.langchain4j.store.embedding.EmbeddingStore;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -35,14 +33,8 @@ public class RagChatBot {
 
 
     @Inject
-    @Named(value = "ollama")
+    @Named(value = "openai")
     ChatLanguageModel chatModel;
-    @Inject
-    @Named(value = "all-minilm-l6-v2")
-    EmbeddingModel embeddingModel;
-    @Inject
-    @Named(value = "in-memory")
-    EmbeddingStore embeddingStore;
     @Inject
     @Named(value = "embedding-store-retriever")
     ContentRetriever retriever;
