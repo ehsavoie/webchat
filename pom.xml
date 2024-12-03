@@ -173,7 +173,7 @@
                 <configuration>
                     <feature-packs>
                         <feature-pack>
-                            <location>org.wildfly:wildfly-ee-galleon-pack:${version.wildfly.bom}</location>
+                            <location>org.wildfly:wildfly-galleon-pack:${version.wildfly.bom}</location>
                         </feature-pack>
                         <feature-pack>
                             <location>org.wildfly:wildfly-ai-feature-pack:${version.wildfly.ai.feature.pack}</location>
@@ -182,6 +182,7 @@
                     <layers>
                         <!-- layers may be used to customize the server to provision-->
                         <layer>cloud-server</layer>
+                        <layer>opentelemetry</layer>
                         <layer>ollama-chat-model</layer>
                         <layer>default-embedding-content-retriever</layer>
                         <!-- providing the following layers -->
