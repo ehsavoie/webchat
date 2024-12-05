@@ -1,6 +1,10 @@
 /subsystem=logging/logger=io.smallrye.llm:add(level=TRACE)
 /subsystem=logging/logger=dev.ai4j.openai4j:add(level=TRACE)
 /subsystem=logging/logger=dev.langchain4j.model.ollama:add(level=TRACE)
+/subsystem=logging/logger=io.smallrye.opentelemetry:add(level=TRACE)
+/subsystem=logging/logger=io.opentelemetry:add(level=TRACE)
+/subsystem=logging/logger=org.wildfly.extension.opentelemetry:add(level=TRACE)
+
 /subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=read-timeout, value=0)
 /subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=write-timeout, value=0)
 
@@ -55,8 +59,11 @@ if (outcome != success) of /extension=org.wildfly.extension.opentelemetry:read-r
     /subsystem=opentelemetry:add()
 end-if
 
-/subsystem=opentelemetry:write-attribute(name=endpoint,value=http://127.0.0.1:4317)
+/subsystem=opentelemetry:write-attribute(name=endpoint,value=http://localhost:4317)
 /subsystem=opentelemetry:write-attribute(name=exporter-type,value=otlp)
 /subsystem=opentelemetry:write-attribute(name=sampler-type,value=on)
 /subsystem=opentelemetry:write-attribute(name=max-queue-size,value=1)
 /subsystem=opentelemetry:write-attribute(name=max-export-batch-size,value=512)
+
+### Enable tracing
+#/subsystem=microprofile-config-smallrye/config-source=webchat:add(properties={"otel.sdk.disabled"="false"})
