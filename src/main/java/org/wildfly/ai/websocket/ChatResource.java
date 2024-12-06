@@ -6,6 +6,7 @@ package org.wildfly.ai.websocket;
 
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanKind;
+import io.opentelemetry.api.trace.StatusCode;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
@@ -31,24 +32,29 @@ public class ChatResource {
     public String chatWithAssistant(@QueryParam("question") String question) {
         Span span = tracer.spanBuilder("service-chat")
                 .setSpanKind(SpanKind.SERVER)
+                .setNoParent()
                 .setAttribute("com.acme.string-key", "value")
                 .startSpan();
-        Scope scope = span.makeCurrent();
-        try {
+        try (Scope scope = span.makeCurrent()) {
             String answer;
             try {
+                span.setAttribute("com.acme.question", "question");
                 span.addEvent(question);
-                System.out.println("Weld Proxy " + aiService);
+                System.out.println("Weld Proxy " + aiService + " with context " + span.getSpanContext() + " and tracer " + tracer + " in thread " + Thread.currentThread() + " with scope " + scope);
                 answer = aiService.chat(question);
+                System.out.println("Answer received " + answer + " with context " + span.getSpanContext() + " and tracer " + tracer + " in thread " + Thread.currentThread() + " with scope " + scope);
+                span.setStatus(StatusCode.OK);
             } catch (Exception e) {
                 e.printStackTrace();
                 span.recordException(e);
+                span.setStatus(StatusCode.ERROR);
                 answer = "My failure reason is:\n\n" + e.getMessage();
             }
             span.addEvent(answer);
+            System.out.println("Ending span " + span + " with context " + span.getSpanContext() + " and tracer " + tracer + " in thread " + Thread.currentThread() + " with scope " + scope);
             return answer;
         } finally {
-            scope.close();
+            System.out.println("Span " + span + " with context " + span.getSpanContext() + " and tracer " + tracer + " in thread " + Thread.currentThread() + " is ended");
             span.end();
         }
     }

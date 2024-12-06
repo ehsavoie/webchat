@@ -145,7 +145,7 @@
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-api</artifactId>
-            <version>1.44.1</version>
+            <version>1.29.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -206,6 +206,7 @@
                     </feature-packs>
                     <layers>
                         <!-- layers may be used to customize the server to provision-->
+                        <!--<layer>jaxrs-server</layer>-->
                         <layer>ee-core-profile-server</layer>
                         <layer>jaxrs</layer>
                         <layer>opentelemetry</layer>
@@ -229,9 +230,6 @@
                         <layer>web-search-engines</layer>
                         -->
                     </layers>
-<!--                    <excludedLayers>
-                        <excludedLayer>observability</excludedLayer>
-                    </excludedLayers>-->
                     <name>ROOT.war</name>
                     <extraServerContentDirs>
                         <extraServerContentDir>extra-content</extraServerContentDir>
