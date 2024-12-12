@@ -5,6 +5,7 @@
 /subsystem=logging/logger=io.opentelemetry.api.logs:add(level=ALL)
 /subsystem=logging/logger=org.wildfly.extension.opentelemetry:add(level=ALL)
 /subsystem=logging/logger=io.opentelemetry.context:add(level=ALL)
+ /system-property=io.opentelemetry.context.enableStrictContext:add(value=true)
 
 /subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=read-timeout, value=0)
 /subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=write-timeout, value=0)
