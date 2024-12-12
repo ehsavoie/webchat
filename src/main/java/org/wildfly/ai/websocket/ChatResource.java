@@ -5,7 +5,6 @@
 package org.wildfly.ai.websocket;
 
 import io.opentelemetry.api.trace.Span;
-import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.StatusCode;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -30,9 +29,7 @@ public class ChatResource {
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/chat")
     public String chatWithAssistant(@QueryParam("question") String question) {
-        Span span = tracer.spanBuilder("service-chat")
-                .setSpanKind(SpanKind.SERVER)
-                .setNoParent()
+        Span span = tracer.spanBuilder("ChatResource")
                 .setAttribute("com.acme.string-key", "value")
                 .startSpan();
         try (Scope scope = span.makeCurrent()) {
