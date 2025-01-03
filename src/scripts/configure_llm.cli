@@ -1,6 +1,7 @@
 /subsystem=logging/logger=io.smallrye.llm:add(level=TRACE)
 /subsystem=logging/logger=dev.ai4j.openai4j:add(level=TRACE)
 /subsystem=logging/logger=dev.langchain4j.model.ollama:add(level=TRACE)
+/subsystem=logging/logger=dev.langchain4j.model.mistralai:add(level=TRACE)
 /subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=read-timeout, value=0)
 /subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=write-timeout, value=0)
 
