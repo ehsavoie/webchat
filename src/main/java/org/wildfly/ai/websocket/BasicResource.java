@@ -21,7 +21,6 @@ import dev.langchain4j.model.chat.ChatLanguageModel;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.StatusCode;
 import io.opentelemetry.api.trace.Tracer;
-import io.opentelemetry.context.Scope;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -38,7 +37,8 @@ import jakarta.ws.rs.core.MediaType;
 @RequestScoped
 @Path("/basic")
 public class BasicResource {
-        @Inject
+
+    @Inject
     @Named(value = "ollama")
     ChatLanguageModel chatModel;
     @Inject
@@ -51,7 +51,7 @@ public class BasicResource {
         Span span = tracer.spanBuilder("BasicChatResource")
                 .setAttribute("com.acme.string-key", "value")
                 .startSpan();
-        try (Scope scope = span.makeCurrent()) {
+        try {
             String answer;
             try {
                 span.setAttribute("com.acme.question", "question");
@@ -81,7 +81,7 @@ public class BasicResource {
         Span span = tracer.spanBuilder("BasicTestResource")
                 .setAttribute("com.acme.string-key", "value")
                 .startSpan();
-        try (Scope scope = span.makeCurrent()) {
+        try {
             String answer;
             try {
                 span.setAttribute("com.acme.question", "question");
@@ -99,5 +99,36 @@ public class BasicResource {
         } finally {
             span.end();
         }
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/implicit")
+    public String testImplicitOpentelemetry(@QueryParam("question") String question) {
+        String answer;
+        try {
+            answer = question + " received";
+        } catch (Exception e) {
+            e.printStackTrace();
+            answer = "My failure reason is:\n\n" + e.getMessage();
+        }
+        return answer;
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/llm")
+    public String testLLMOpentelemetry(@QueryParam("question") String question) {
+        String answer;
+        try {
+            answer = chatModel.generate(SystemMessage.from("""
+                   You are an AI named Bob answering general question.
+                   Your response must be polite, use the same language as the question, and be relevant to the question."""),
+                    UserMessage.from(question)).content().text();
+        } catch (Exception e) {
+            e.printStackTrace();
+            answer = "My failure reason is:\n\n" + e.getMessage();
+        }
+        return answer;
     }
 }

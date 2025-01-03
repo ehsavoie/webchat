@@ -35,7 +35,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jakartaee>10.0.0</jakartaee>
         <version.wildfly.maven.plugin>5.1.0.Beta2</version.wildfly.maven.plugin>
-        <version.wildfly.bom>35.0.0.Beta1</version.wildfly.bom>
+        <version.wildfly.server>35.0.0.Final-SNAPSHOT</version.wildfly.server>
         <version.wildfly.ai.feature.pack>1.0.0-SNAPSHOT</version.wildfly.ai.feature.pack>
         <version.dev.langchain4j>1.0.0-alpha1</version.dev.langchain4j>
         <version.io.smallrye.llm>0.0.2</version.io.smallrye.llm>
@@ -145,7 +145,7 @@
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-api</artifactId>
-            <version>1.42.1</version>
+            <version>1.45.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -181,7 +181,7 @@
                         <spaces>
                             <space>incubating</space>
                         </spaces>
-                        <version>${version.wildfly.bom}</version>
+                        <version>${version.wildfly.server}</version>
                     </discoverProvisioningInfo>
                     <name>ROOT.war</name>
                     <extraServerContentDirs>
@@ -198,7 +198,7 @@
                 <configuration>
                     <feature-packs>
                         <feature-pack>
-                            <location>org.wildfly:wildfly-galleon-pack:${version.wildfly.bom}</location>
+                            <location>org.wildfly:wildfly-galleon-pack:${version.wildfly.server}</location>
                         </feature-pack>
                         <feature-pack>
                             <location>org.wildfly:wildfly-ai-feature-pack:${version.wildfly.ai.feature.pack}</location>
