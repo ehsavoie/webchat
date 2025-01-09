@@ -28,7 +28,7 @@ You need to include the WildFly AI feature-pack and layers in the Maven Plugin c
 ...
 <feature-packs>
   <feature-pack>
-    <location>org.wildfly:wildfly-galleon-pack:34.0.0.Final</location>
+    <location>org.wildfly:wildfly-galleon-pack:35.0.0.Final</location>
   </feature-pack>
   <feature-pack>
     <location>org.wildfly:wildfly-ai-galleon-pack:1.0.0-SNAPSHOT</location>
@@ -55,6 +55,20 @@ You need to include the WildFly AI feature-pack and layers in the Maven Plugin c
 </layers>
 ...
 ```
+##  Provisioning using the [WildFly Maven Plugin and Glow](https://github.com/wildfly/wildfly-maven-plugin/)
+
+This makes the provisioning seamless and the XML simpler:
+
+```xml
+...
+<discoverProvisioningInfo>
+  <spaces>
+    <space>incubating</space>
+  </spaces>
+</discoverProvisioningInfo>
+...
+```
+
 
 ##  Building and running the example application
 
@@ -68,7 +82,26 @@ You can now start the server:
  ./target/server/bin/standalone.sh 
 ```
 You can interact with the application using:
-* [What is the best sci-fi movie ?](http://localhost:8080/rest/service/chat?question=What%20is%20the%20best%20sci-fi%20movie)
-* [What is the square root of the sum of the numbers of letters in the words hello and world ?](http://localhost:8080/rest/service/chat?question=What%20is%20the%20square%20root%20of%20the%20sum%20of%20the%20numbers%20of%20letters%20in%20the%20words%20hello%20and%20world)
+* some simple REST endpoints defined on [the service page](http://localhost:8080/service.html)
 * A simple webchat interface for [RAG](http://localhost:8080/) using WildFly documentation. 
+You can ask question that the RAG will try to answer like: **"How do you configure a connection factory to a remote Artemis server ?"**.
+
+##  Building and running the example application with OpenTelemetry
+
+You build using Apache Maven with the following command:
+
+```shell
+mvn clean install -Popentelemetry
+```
+You can now start the otle collector:
+```shell
+ ./opentelemetry.sh 
+```
+You can now start the server:
+```shell
+ ./target/server/bin/standalone.sh 
+```
+You can interact with the application using:
+* some simple REST endpoints defined on [the service page](http://localhost:8080/service.html)
+* A simple webchat interface for [RAG](http://localhost:8080/service.html) using WildFly documentation. 
 You can ask question that the RAG will try to answer like: **"How do you configure a connection factory to a remote Artemis server ?"**.

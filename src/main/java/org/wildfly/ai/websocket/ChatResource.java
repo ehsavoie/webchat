@@ -4,7 +4,7 @@
  */
 package org.wildfly.ai.websocket;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -12,7 +12,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 
-@ApplicationScoped
+@RequestScoped
 @Path("/service")
 public class ChatResource {
 
@@ -25,7 +25,6 @@ public class ChatResource {
     public String chatWithAssistant(@QueryParam("question") String question) {
         String answer;
         try {
-            System.out.println("Weld Proxy " + aiService);
             answer = aiService.chat(question);
         } catch (Exception e) {
             e.printStackTrace();

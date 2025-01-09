@@ -18,7 +18,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-     <parent>
+    <parent>
         <groupId>org.jboss</groupId>
         <artifactId>jboss-parent</artifactId>
         <version>47</version>
@@ -31,12 +31,12 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>        
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jakartaee>10.0.0</jakartaee>
         <version.wildfly.maven.plugin>5.1.1.Final</version.wildfly.maven.plugin>
         <version.wildfly.server>35.0.0.Final</version.wildfly.server>
-        <version.wildfly.ai.feature.pack>1.0.0-SNAPSHOT</version.wildfly.ai.feature.pack>
+        <version.wildfly.ai.feature.pack>0.3.1</version.wildfly.ai.feature.pack>
         <version.dev.langchain4j>1.0.0-alpha1</version.dev.langchain4j>
         <version.io.smallrye.llm>0.0.2</version.io.smallrye.llm>
         <version.compiler.plugin>3.13.0</version.compiler.plugin>
@@ -142,6 +142,12 @@
             <version>${version.dev.langchain4j}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-api</artifactId>
+            <version>1.45.0</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -185,10 +191,41 @@
                         <packaging-script>
                             <scripts>
                                 <script>./src/scripts/configure_llm.cli</script>
+                                <script>./src/scripts/disable_opentelemetry.cli</script>
                             </scripts>
                         </packaging-script>
                     </packagingScripts>
-                </configuration>
+                  </configuration>
+<!--              <configuration>
+                    <feature-packs>
+                        <feature-pack>
+                            <location>org.wildfly:wildfly-galleon-pack:${version.wildfly.server}</location>
+                        </feature-pack>
+                        <feature-pack>
+                            <location>org.wildfly:wildfly-ai-feature-pack:${version.wildfly.ai.feature.pack}</location>
+                        </feature-pack>
+                    </feature-packs>
+                    <layers>
+                        <layer>jaxrs-server</layer>
+                        <layer>ee-core-profile-server</layer>
+                        <layer>jaxrs</layer>
+                        <layer>opentelemetry</layer>
+                        <layer>ollama-chat-model</layer>
+                        <layer>default-embedding-content-retriever</layer>
+                    </layers>
+                    <name>ROOT.war</name>
+                    <extraServerContentDirs>
+                        <extraServerContentDir>extra-content</extraServerContentDir>
+                    </extraServerContentDirs>
+                    <packagingScripts>
+                        <packaging-script>
+                            <scripts>
+                                <script>./src/scripts/configure_llm.cli</script>
+                                <script>./src/scripts/disable_opentelemetry.cli</script>
+                            </scripts>
+                        </packaging-script>
+                    </packagingScripts>
+                </configuration>-->
                 <executions>
                     <execution>
                         <goals>
@@ -199,5 +236,77 @@
             </plugin>
         </plugins>
     </build>
-
+    <profiles>
+        <profile>
+            <id>opentelemetry</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.wildfly.plugins</groupId>
+                        <artifactId>wildfly-maven-plugin</artifactId>
+                        <version>${version.wildfly.maven.plugin}</version>
+                         <configuration>
+                            <discoverProvisioningInfo>
+                                <layersForJndi>
+                                    <layer>opentelemetry</layer>
+                                </layersForJndi>
+                                <spaces>
+                                    <space>incubating</space>
+                                </spaces>
+                                <version>${version.wildfly.server}</version>
+                            </discoverProvisioningInfo>
+                            <name>ROOT.war</name>
+                            <extraServerContentDirs>
+                                <extraServerContentDir>extra-content</extraServerContentDir>
+                            </extraServerContentDirs>
+                            <packagingScripts>
+                                <packaging-script>
+                                    <scripts>
+                                        <script>./src/scripts/configure_llm.cli</script>
+                                        <script>./src/scripts/configure_opentelemetry.cli</script>
+                                    </scripts>
+                                </packaging-script>
+                            </packagingScripts>
+                        </configuration>
+<!--                    <configuration>
+                            <feature-packs>
+                                <feature-pack>
+                                    <location>org.wildfly:wildfly-galleon-pack:${version.wildfly.server}</location>
+                                </feature-pack>
+                                <feature-pack>
+                                    <location>org.wildfly:wildfly-ai-feature-pack:${version.wildfly.ai.feature.pack}</location>
+                                </feature-pack>
+                            </feature-packs>
+                            <layers>
+                                <layer>ee-core-profile-server</layer>
+                                <layer>jaxrs</layer>
+                                <layer>opentelemetry</layer>
+                                <layer>ollama-chat-model</layer>
+                                <layer>default-embedding-content-retriever</layer>
+                            </layers>
+                            <name>ROOT.war</name>
+                            <extraServerContentDirs>
+                                <extraServerContentDir>extra-content</extraServerContentDir>
+                            </extraServerContentDirs>
+                            <packagingScripts>
+                                <packaging-script>
+                                    <scripts>
+                                        <script>./src/scripts/configure_llm.cli</script>
+                                        <script>./src/scripts/configure_opentelemetry.cli</script>
+                                    </scripts>
+                                </packaging-script>
+                            </packagingScripts>
+                        </configuration>-->
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>package</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
