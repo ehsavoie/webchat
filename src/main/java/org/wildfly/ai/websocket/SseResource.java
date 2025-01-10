@@ -48,7 +48,7 @@ public class SseResource {
     @Path("/chat")
     public void streamingChatWithAssistant(@Context Sse sse, @Context SseEventSink sseEventSink,
             @HeaderParam(HttpHeaders.LAST_EVENT_ID_HEADER) @DefaultValue("-1") int lastReceivedId,
-            @QueryParam("question") String question) {
+            @QueryParam("question") String question) throws InterruptedException {
         final int lastEventId;
         if (lastReceivedId != -1) {
             lastEventId = lastReceivedId + 1;
@@ -61,8 +61,9 @@ public class SseResource {
                    Your response must be polite, use the same language as the question, and be relevant to the question."""),
                 UserMessage.from(question));
         SseBroadcasterStreamingResponseHandler handler = new SseBroadcasterStreamingResponseHandler(sseEventSink, sse, lastEventId);
+        streamingChatModel.generate(messages, handler);
         while (handler.isRunning()) {
-            streamingChatModel.generate(messages, handler);
+            Thread.sleep(300);
         }
     }
 }
