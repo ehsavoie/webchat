@@ -48,7 +48,6 @@ public class SseBroadcasterStreamingResponseHandler implements StreamingResponse
                 .comment("This is a token from the llm")
                 .build();
         sseEventSink.send(sseEvent);
-        lastEventId++;
     }
 
     public boolean isRunning() {

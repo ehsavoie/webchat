@@ -1,22 +1,11 @@
-<!DOCTYPE html>
+<!doctype html>
 <!--
-Copyright 2024 JBoss by Red Hat.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+  Copyright The WildFly Authors
+   SPDX-License-Identifier: Apache-2.0
 -->
 <html>
     <head>
-        <title>Streamign Example</title>
+        <title>Streaming Example</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="resources/css/hello.css" />
@@ -25,36 +14,32 @@ limitations under the License.
         <div>This is a simple example of calls to a langChain4J StreamingChatLanguageModel</div>
         <div>What is the best sci-fi movie? using a ChatLanguageModel
         </div>
-        <div>
-            <ul id="data">
-            </ul>
+        <div id="data">
+            Hello
         </div>
         <script>
             var source = new EventSource('rest/sse/chat?question=What%20is%20the%20best%20sci-fi%20movie');
-            source.onopen = function (event) {
-                console.log(event);
-            };
+//            source.onopen = function (event) {
+//                console.log(event);
+//            };
+
             source.addEventListener("token", function (event) {
-                if (source.readyState === EventSource.CLOSED) {
-                    source.close();
-                  }
-                append(event.data);
+                console.log("EventListener " + event.id  + " " + event.data);
+                append(event);
             }, false);
+////
+//            source.onmessage = function (event) {
+//                console.log("On message " + event);
+//                append(event);
+//            };
+//
+//            source.onerror = function (event) {
+//                console.log(event);
+//                source.close();
+//            };
 
-            source.onmessage = function (event) {
-                console.log(event.data);
-                append(event.data);
-            };
-            source.onerror = function (event) {
-                console.log(event);
-                source.close();
-            };
-
-            function append(data) {
-                var ul = document.getElementById("data");
-                var li = document.createElement("li");
-                li.appendChild(document.createTextNode(data));
-                ul.insertBefore(li, ul.childNodes[0]);
+            function append(event) {
+                document.getElementById("data").innerHTML += event.data + "<br>";
             }
             ;
         </script>
