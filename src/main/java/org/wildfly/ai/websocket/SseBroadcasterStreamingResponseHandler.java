@@ -43,7 +43,7 @@ public class SseBroadcasterStreamingResponseHandler implements StreamingResponse
                 .name("token")
                 .id(String.valueOf(lastEventId))
                 .mediaType(MediaType.TEXT_PLAIN_TYPE)
-                .data(token)
+                .data(token.replace("\n", "<br/>"))
                 .reconnectDelay(3000)
                 .comment("This is a token from the llm")
                 .build();

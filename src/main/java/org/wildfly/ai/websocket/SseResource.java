@@ -32,9 +32,8 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.sse.Sse;
+import jakarta.ws.rs.sse.SseEventSink;
 import java.util.List;
-import org.jboss.resteasy.annotations.Stream;
-import org.reactivestreams.Publisher;
 
 @RequestScoped
 @Path("/sse")
@@ -44,36 +43,10 @@ public class SseResource {
     @Named(value = "streaming-ollama")
     StreamingChatLanguageModel streamingChatModel;
 
-//
-//    @GET
-//    @Produces(MediaType.SERVER_SENT_EVENTS)
-//    @Path("/chat")
-//    public void streamingChatWithAssistant(@Context Sse sse, @Context SseEventSink sseEventSink,
-//            @HeaderParam(HttpHeaders.LAST_EVENT_ID_HEADER) @DefaultValue("-1") int lastReceivedId,
-//            @QueryParam("question") String question) throws InterruptedException {
-//        final int lastEventId;
-//        if (lastReceivedId != -1) {
-//            lastEventId = lastReceivedId + 1;
-//        } else {
-//            lastEventId = 1;
-//        }
-//        System.out.println("Receiving a request on SSE endpoint");
-//        List<ChatMessage> messages = List.of(SystemMessage.from("""
-//                   You are an AI named Bob answering general question.
-//                   Your response must be polite, use the same language as the question, and be relevant to the question."""),
-//                UserMessage.from(question));
-//        SseBroadcasterStreamingResponseHandler handler = new SseBroadcasterStreamingResponseHandler(sseEventSink, sse, lastEventId);
-//        streamingChatModel.generate(messages, handler);
-//        while (handler.isRunning()) {
-//            Thread.sleep(300);
-//        }
-//    }
-
     @GET
     @Produces(MediaType.SERVER_SENT_EVENTS)
     @Path("/chat")
-    @Stream
-    public Publisher<String> streamingChatWithAssistant(@Context Sse sse,
+    public void streamingChatWithAssistant(@Context Sse sse, @Context SseEventSink sseEventSink,
             @HeaderParam(HttpHeaders.LAST_EVENT_ID_HEADER) @DefaultValue("-1") int lastReceivedId,
             @QueryParam("question") String question) throws InterruptedException {
         final int lastEventId;
@@ -87,8 +60,31 @@ public class SseResource {
                    You are an AI named Bob answering general question.
                    Your response must be polite, use the same language as the question, and be relevant to the question."""),
                 UserMessage.from(question));
-        PublisherStreamingResponseHandler handler = new PublisherStreamingResponseHandler();
+        SseBroadcasterStreamingResponseHandler handler = new SseBroadcasterStreamingResponseHandler(sseEventSink, sse, lastEventId);
+        System.out.println("streamingChatWithAssistant called within:" + Thread.currentThread());
         streamingChatModel.generate(messages, handler);
-        return handler;
     }
+//    @GET
+//    @Path("/chat")
+//    @Produces(MediaType.SERVER_SENT_EVENTS)
+//    @SseElementType(MediaType.TEXT_PLAIN)
+//    @Stream(Stream.MODE.GENERAL)
+//    public Publisher<String> streamingChatWithAssistant(@Context Sse sse,
+//            @HeaderParam(HttpHeaders.LAST_EVENT_ID_HEADER) @DefaultValue("-1") int lastReceivedId,
+//            @QueryParam("question") String question) throws InterruptedException {
+//        final int lastEventId;
+//        if (lastReceivedId != -1) {
+//            lastEventId = lastReceivedId + 1;
+//        } else {
+//            lastEventId = 1;
+//        }
+//        System.out.println("Receiving a request on SSE endpoint");
+//        List<ChatMessage> messages = List.of(SystemMessage.from("""
+//                   You are an AI named Bob answering general question.
+//                   Your response must be polite, use the same language as the question, and be relevant to the question."""),
+//                UserMessage.from(question));
+//        PublisherStreamingResponseHandler handler = new PublisherStreamingResponseHandler();
+//        streamingChatModel.generate(messages, handler);
+//        return handler;
+//    }
 }

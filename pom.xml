@@ -151,8 +151,14 @@
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-core-spi</artifactId>
-            <version>7.0.0.Beta1-SNAPSHOT</version>
+            <version>6.2.11.Final</version>
+            <scope>provided</scope>
             <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.reactivestreams</groupId>
+            <artifactId>reactive-streams</artifactId>
+            <version>1.0.4</version>
         </dependency>
     </dependencies>
 
@@ -189,6 +195,15 @@
                         </spaces>
                         <version>${version.wildfly.server}</version>
                     </discoverProvisioningInfo>
+                    <channels>
+                        <channel>
+                            <manifest>
+                                <groupId>dev.resteasy.channels</groupId>
+                                <artifactId>resteasy-6.2</artifactId>
+                                <version>6.2.12.Final-SNAPSHOT</version>
+                            </manifest>
+                        </channel>
+                    </channels>
                     <name>ROOT.war</name>
                     <extraServerContentDirs>
                         <extraServerContentDir>extra-content</extraServerContentDir>

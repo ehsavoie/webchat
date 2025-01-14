@@ -3,47 +3,77 @@
   Copyright The WildFly Authors
    SPDX-License-Identifier: Apache-2.0
 -->
-<html>
+<html lang="en">
     <head>
         <title>Streaming Example</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="resources/css/hello.css" />
     </head>
-    <body><h1>Welcome to WildFly AI SSE page!</h1>
+    <body><h1>Welcome to WildFly AI Server-Sent-Event page!</h1>
         <div>This is a simple example of calls to a langChain4J StreamingChatLanguageModel</div>
-        <div>What is the best sci-fi movie? using a ChatLanguageModel
+        <div>What is the best sci-fi movie?</div>
+        <div>
+            <fieldset>
+                <legend>Connect or disconnect Server-Sent-Event channel :</legend>
+                <input type="button" id="connect" onclick="connect();" value="Open Connection" />
+                <input type="button" id="disconnect" onclick="disconnect();" value="Close Connection" />
+            </fieldset>
         </div>
-        <div id="data">
-            Hello
+        <div>Current Server-Sent-Event Connection Status: <output id="currentstatus" class="message">Closed</output></div>
+        <div id="output">
         </div>
         <script>
-            var source = new EventSource('rest/sse/chat?question=What%20is%20the%20best%20sci-fi%20movie');
-//            source.onopen = function (event) {
-//                console.log(event);
-//            };
+            const output = document.querySelector("div#output");
+            var source = null;
+            function connect() {
+                source = new EventSource('rest/sse/chat?question=What%20is%20the%20best%20sci-fi%20movie');
 
-            source.addEventListener("token", function (event) {
-                console.log("EventListener " + event.lastEventId  + " " + event.data);
-                append(event);
-            }, false);
-////
-//            source.onmessage = function (event) {
-//                console.log("On message " + event);
-//                append(event);
-//            };
-//
-//            source.onerror = function (event) {
-//                console.log(event);
-//                source.close();
-//            };
+                source.addEventListener("token", (event) => {
+                    append(event.data);
+                });
 
-            function append(event) {
-                document.getElementById("data").innerHTML += event.data + "<br>";
+                source.addEventListener("open", (event) => {
+                    console.log("Opened");
+                    console.log(event);
+                    displayStatus('Open ' + event.reason + ' ' + new Date().toISOString());
+                });
+
+                source.addEventListener("message", (event) => {
+                    console.log(`Message ${event}`);
+                    console.log(event.data);
+                    append(event.data);
+                });
+
+                source.addEventListener("error", (event) => {
+                    console.error("EventSource failed:", event);
+                    source.close();
+                });
             }
-            ;
+
+            function disconnect() {
+                if (source !== null) {
+                    source.close();
+                    source = null;
+                }
+                displayStatus('Closed ' + new Date().toISOString());
+                // log the event
+            }
+
+            let count = 0;
+
+            function append(data) {
+                if (count++ < 10) {
+                    console.log(`'${data}'`);
+                }
+                output.innerHTML = output.innerHTML + data;
+            }
+
+            function displayStatus(status) {
+                var currentStatus = document.getElementById('currentstatus');
+                currentStatus.value = status;
+            }
         </script>
     </body>
 </html>
-
 
