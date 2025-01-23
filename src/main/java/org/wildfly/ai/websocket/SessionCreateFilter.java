@@ -17,7 +17,7 @@ import java.io.IOException;
  *
  * @author Emmanuel Hugonnet (c) 2024 Red Hat, Inc.
  */
-@WebFilter(displayName = "CreateSession", urlPatterns = {"*"})
+@WebFilter(displayName = "CreateSession", urlPatterns = {"*"},asyncSupported = true)
 public class SessionCreateFilter implements Filter {
 
     @Override
