@@ -70,7 +70,7 @@ public class RagChatBot {
                 .chatMemory(chatMemory)
                 .retrievalAugmentor(augmentor)
                 .build();
-        String result = chain.execute(question).replace("\n", "<br/>");
+        String result = chain.execute(question);
         return result;
     }
 

@@ -3,9 +3,9 @@
   Copyright The WildFly Authors
    SPDX-License-Identifier: Apache-2.0
 -->
-<html>
+<html lang="en" data-bs-theme="dark">
     <head>
-        <title>AI ChatBot</title>
+        <title>Streaming Example</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="resources/css/hello.css" />
@@ -25,42 +25,33 @@
             <div id="liveAlertPlaceholder" class="toast-container top-0 end-0 p-3"></div>
         </div>
         <div class="container">
-            <h1>Welcome to WildFly ChatBot sample!</h1>
-            <div>This is a simple example of a WebSocket implementation to chat with a LLM.</div>
+            <h1>Welcome to WildFly AI Server-Sent-Event page!</h1>
+            <div>This is a simple example of calls to a langChain4J StreamingChatLanguageModel</div>
 
             <div>
                 <div class="overflow-auto" id="output">
                 </div>
                 <div class="input-group">
-                    <input type="text" class="form-control" id="question" placeholder="How do you configure a connection factory to a remote Artemis server?" aria-label="Ask me anything" >
+                    <input type="text" class="form-control" id="question" placeholder="What is the best sci-fi movie?" aria-label="Ask me anything" >
                 </div>
-                <div>Current WebSocket Connection Status: <output id="currentstatus" class="message">Closed</output></div>
             </div>
         </div>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
                 crossorigin="anonymous"></script>
-                
         <script>
             window.addEventListener("load", () => {
-                const wsProtocol = window.location.protocol == "https:" ? "wss" : "ws";
-                const wsURI = wsProtocol + '://' + window.location.host + window.location.pathname + 'websocket/chatbot';
                 const output = document.querySelector("div#output");
-                const currentStatus =  document.querySelector('output#currentstatus');
                 const question = document.querySelector("input#question");
                 question.focus();
-                var websocket = null;
-
-                const displayStatus = (status) => {
-                    currentStatus.value = status;
-                };
 
                 const scrollToBottom = () => {
                     window.scrollTo({
                         top: document.body.scrollHeight,
                         behavior: "smooth"
                     });
-                };
+                }
 
                 const addResponse = (q) => {
                     const responseContainer = document.createElement("p");
@@ -83,30 +74,23 @@
                 const makeRequest = () => {
                     const q = question.value;
                     const output = addResponse(q);
-                    if(websocket === null) {
-                        websocket = new WebSocket(wsURI);
-                        websocket.onopen = function() {
-                            displayStatus('Open');
-                            websocket.send(q); 
-                        };
-                        websocket.onmessage = function(event) {
-                            const content = document.createElement("pre");
-                            content.textContent = event.data;
-                            output.append(content);
+                    const uri = "rest/sse/chat?question=" + encodeURIComponent(q);
+                    const source = new EventSource(uri);
+
+                    source.addEventListener("token", (event) => {
+                        const token = event.data;
+                        if (token === "end-data-token") {
+                            source.close();
+                        } else {
+                            output.innerHTML += token;
                             scrollToBottom();
-                        };
-                        websocket.onerror = function(event) {
-                            // log the event
-                            console.error("EventSource failed:", event);
-                            output.innerHTML += 'Error! ' + event.data;
-                        };
-                        websocket.onclose = function(event) {
-                            displayStatus('Closed ' + event.reason + ' ' + new Date().toISOString());
-                            document.getElementById('sayHello').disabled = true;
-                        };
-                    } else {
-                        websocket.send(q); 
-                    }
+                        }
+                    });
+
+                    source.addEventListener("error", (event) => {
+                        console.error("EventSource failed:", event);
+                        source.close();
+                    });
                     question.value = "";
                     question.focus();
                 };
@@ -120,3 +104,4 @@
         </script>
     </body>
 </html>
+
