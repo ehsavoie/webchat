@@ -1,0 +1,4 @@
+if (outcome == success) of /extension=org.wildfly.extension.opentelemetry:read-resource
+    /subsystem=opentelemetry:remove()
+    /extension=org.wildfly.extension.opentelemetry:remove()
+end-if
