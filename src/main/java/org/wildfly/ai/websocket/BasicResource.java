@@ -34,10 +34,10 @@ public class BasicResource {
     public String chatWithAssistant(@QueryParam("question") String question) {
         String answer;
         try {
-            answer = chatModel.generate(SystemMessage.from("""
+            answer = chatModel.chat(SystemMessage.from("""
                    You are an AI named Bob answering general question.
                    Your response must be polite, use the same language as the question, and be relevant to the question."""),
-                    UserMessage.from(question)).content().text();
+                    UserMessage.from(question)).aiMessage().text();
         } catch (Exception e) {
             e.printStackTrace();
             answer = "My failure reason is:\n\n" + e.getMessage();

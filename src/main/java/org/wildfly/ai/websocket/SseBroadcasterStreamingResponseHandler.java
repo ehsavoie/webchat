@@ -6,15 +6,14 @@ package org.wildfly.ai.websocket;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import dev.langchain4j.data.message.AiMessage;
-import dev.langchain4j.model.StreamingResponseHandler;
-import dev.langchain4j.model.output.Response;
+import dev.langchain4j.model.chat.response.ChatResponse;
+import dev.langchain4j.model.chat.response.StreamingChatResponseHandler;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.sse.OutboundSseEvent;
 import jakarta.ws.rs.sse.Sse;
 import jakarta.ws.rs.sse.SseEventSink;
 
-public class SseBroadcasterStreamingResponseHandler implements StreamingResponseHandler<AiMessage> {
+public class SseBroadcasterStreamingResponseHandler implements StreamingChatResponseHandler{
 
     private final AtomicInteger lastEventId;
     private final SseEventSink sseEventSink;
@@ -27,12 +26,17 @@ public class SseBroadcasterStreamingResponseHandler implements StreamingResponse
     }
 
     @Override
-    public void onNext(String token) {
+    public void onError(Throwable error) {
+        error.printStackTrace();
+    }
+
+    @Override
+    public void onPartialResponse(String partialResponse) {
         OutboundSseEvent sseEvent = eventBuilder
                 .name("token")
                 .id(String.valueOf(lastEventId.getAndIncrement()))
                 .mediaType(MediaType.TEXT_PLAIN_TYPE)
-                .data(token.replace("\n", "<br/>"))
+                .data(partialResponse.replace("\n", "<br/>"))
                 .reconnectDelay(3000)
                 .comment("This is a token from the llm")
                 .build();
@@ -40,7 +44,7 @@ public class SseBroadcasterStreamingResponseHandler implements StreamingResponse
     }
 
     @Override
-    public void onComplete(Response<AiMessage> response) {
+    public void onCompleteResponse(ChatResponse completeResponse) {
         OutboundSseEvent sseEvent = eventBuilder
                 .name("token")
                 .id(String.valueOf(lastEventId.getAndIncrement()))
@@ -53,10 +57,5 @@ public class SseBroadcasterStreamingResponseHandler implements StreamingResponse
                 .whenComplete((event, throwable) -> {
                     sseEventSink.close();
                 });
-    }
-
-    @Override
-    public void onError(Throwable error) {
-        error.printStackTrace();
     }
 }

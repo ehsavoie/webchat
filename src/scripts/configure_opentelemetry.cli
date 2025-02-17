@@ -14,7 +14,7 @@ end-if
 /subsystem=opentelemetry:write-attribute(name=endpoint,value=http://localhost:4317)
 /subsystem=opentelemetry:write-attribute(name=exporter-type,value=otlp)
 /subsystem=opentelemetry:write-attribute(name=sampler-type,value=on)
-/subsystem=opentelemetry:write-attribute(name=max-queue-size,value=10)
+/subsystem=opentelemetry:write-attribute(name=max-queue-size,value=100)
 /subsystem=opentelemetry:write-attribute(name=max-export-batch-size,value=512)
 
 ### Enable tracing for MP Opentelemetry only

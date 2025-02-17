@@ -3,7 +3,7 @@
   Copyright The WildFly Authors
    SPDX-License-Identifier: Apache-2.0
 -->
-<html>
+<html lang="en" data-bs-theme="dark">
     <head>
         <title>AI ChatBot</title>
         <meta charset="UTF-8">
@@ -14,11 +14,11 @@
               integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     </head>
-    <body>
-
-        <nav class="navbar navbar-dark bg-dark">
+    <body class="bg-image">
+        <nav class="navbar navbar-dark">
             <div class="container-fluid">
-                <a href="#" class="navbar-brand">WildFly AI</a>
+                <a href="#" class="navbar-brand">
+                    <img src="/resources/images/wildfly_icons_one-color-logo.png" width="107" height="30" class="d-inline-block align-top" alt=""> WildFly AI</a>
             </div>
         </nav>
         <div aria-live="polite" aria-atomic="true" class="position-relative">
@@ -27,7 +27,6 @@
         <div class="container">
             <h1>Welcome to WildFly ChatBot sample!</h1>
             <div>This is a simple example of a WebSocket implementation to chat with a LLM.</div>
-
             <div>
                 <div class="overflow-auto" id="output">
                 </div>
@@ -39,14 +38,14 @@
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-                crossorigin="anonymous"></script>
-                
+        crossorigin="anonymous"></script>
+
         <script>
             window.addEventListener("load", () => {
                 const wsProtocol = window.location.protocol == "https:" ? "wss" : "ws";
                 const wsURI = wsProtocol + '://' + window.location.host + window.location.pathname + 'websocket/chatbot';
                 const output = document.querySelector("div#output");
-                const currentStatus =  document.querySelector('output#currentstatus');
+                const currentStatus = document.querySelector('output#currentstatus');
                 const question = document.querySelector("input#question");
                 question.focus();
                 var websocket = null;
@@ -83,29 +82,29 @@
                 const makeRequest = () => {
                     const q = question.value;
                     const output = addResponse(q);
-                    if(websocket === null) {
+                    if (websocket === null) {
                         websocket = new WebSocket(wsURI);
-                        websocket.onopen = function() {
+                        websocket.onopen = function () {
                             displayStatus('Open');
-                            websocket.send(q); 
+                            websocket.send(q);
                         };
-                        websocket.onmessage = function(event) {
+                        websocket.onmessage = function (event) {
                             const content = document.createElement("pre");
                             content.textContent = event.data;
                             output.append(content);
                             scrollToBottom();
                         };
-                        websocket.onerror = function(event) {
+                        websocket.onerror = function (event) {
                             // log the event
                             console.error("EventSource failed:", event);
                             output.innerHTML += 'Error! ' + event.data;
                         };
-                        websocket.onclose = function(event) {
+                        websocket.onclose = function (event) {
                             displayStatus('Closed ' + event.reason + ' ' + new Date().toISOString());
                             document.getElementById('sayHello').disabled = true;
                         };
                     } else {
-                        websocket.send(q); 
+                        websocket.send(q);
                     }
                     question.value = "";
                     question.focus();

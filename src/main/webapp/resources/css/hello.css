@@ -40,3 +40,9 @@ fieldset {
     padding: 10px;
 }
 
+.bg-image{
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('/resources/images/wildfly_hero_r3v1.jpg');
+}

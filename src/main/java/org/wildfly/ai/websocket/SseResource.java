@@ -51,6 +51,6 @@ public class SseResource {
                 UserMessage.from(question));
         SseBroadcasterStreamingResponseHandler handler = new SseBroadcasterStreamingResponseHandler(sseEventSink, sse, lastEventId);
         System.out.println("streamingChatWithAssistant called within:" + Thread.currentThread());
-        streamingChatModel.generate(messages, handler);
+        streamingChatModel.chat(messages, handler);
     }
 }
