@@ -6,14 +6,16 @@ package org.wildfly.ai.websocket;
 
 import dev.langchain4j.data.message.SystemMessage;
 import dev.langchain4j.data.message.UserMessage;
-import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.ChatModel;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 
 /**
@@ -26,12 +28,13 @@ public class BasicResource {
 
     @Inject
     @Named(value = "ollama")
-    ChatLanguageModel chatModel;
+    ChatModel chatModel;
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/chat")
-    public String chatWithAssistant(@QueryParam("question") String question) {
+    public String chatWithAssistant(@QueryParam("question") String question, @Context HttpServletRequest request) {
+        request.getSession(true);
         String answer;
         try {
             answer = chatModel.chat(SystemMessage.from("""
@@ -48,7 +51,8 @@ public class BasicResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/implicit")
-    public String testImplicitOpentelemetry(@QueryParam("question") String question) {
+    public String testImplicitOpentelemetry(@QueryParam("question") String question, @Context HttpServletRequest request) {
+        request.getSession(true);
         String answer;
         try {
             answer = question + " received";

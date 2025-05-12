@@ -7,7 +7,7 @@ package org.wildfly.ai.websocket;
 import dev.langchain4j.chain.ConversationalRetrievalChain;
 import dev.langchain4j.memory.ChatMemory;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
-import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.input.PromptTemplate;
 import dev.langchain4j.rag.DefaultRetrievalAugmentor;
 import dev.langchain4j.rag.RetrievalAugmentor;
@@ -34,7 +34,7 @@ public class RagChatBot {
 
     @Inject
     @Named(value = "ollama")
-    ChatLanguageModel chatModel;
+    ChatModel chatModel;
     @Inject
     @Named(value = "embedding-store-retriever")
     ContentRetriever retriever;
@@ -66,7 +66,7 @@ public class RagChatBot {
     public String sayHello(String question, Session session) throws IOException {
         ChatMemory chatMemory = MessageWindowChatMemory.builder().id(session.getUserProperties().get("httpSessionId")).maxMessages(3).build();
         ConversationalRetrievalChain chain = ConversationalRetrievalChain.builder()
-                .chatLanguageModel(chatModel)
+                .chatModel(chatModel)
                 .chatMemory(chatMemory)
                 .retrievalAugmentor(augmentor)
                 .build();

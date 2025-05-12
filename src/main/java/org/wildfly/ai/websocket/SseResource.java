@@ -7,7 +7,7 @@ package org.wildfly.ai.websocket;
 import dev.langchain4j.data.message.ChatMessage;
 import dev.langchain4j.data.message.SystemMessage;
 import dev.langchain4j.data.message.UserMessage;
-import dev.langchain4j.model.chat.StreamingChatLanguageModel;
+import dev.langchain4j.model.chat.StreamingChatModel;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -30,7 +30,7 @@ public class SseResource {
 
     @Inject
     @Named(value = "streaming-ollama")
-    StreamingChatLanguageModel streamingChatModel;
+    StreamingChatModel streamingChatModel;
 
     @GET
     @Produces(MediaType.SERVER_SENT_EVENTS)

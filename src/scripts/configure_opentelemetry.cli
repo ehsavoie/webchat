@@ -3,7 +3,7 @@
 /subsystem=logging/logger=io.opentelemetry.sdk:add(level=ALL)
 /subsystem=logging/logger=org.wildfly.extension.opentelemetry:add(level=ALL)
 /subsystem=logging/logger=io.opentelemetry.context:add(level=ALL)
-/system-property=io.opentelemetry.context.enableStrictContext:add(value=true)
+/system-property=io.opentelemetry.context.enableStrictContext:add(value=false)
 /system-property=otel.sdk.disabled:add(value=false)
 
 if (outcome != success) of /extension=org.wildfly.extension.opentelemetry:read-resource

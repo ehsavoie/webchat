@@ -5,12 +5,11 @@
 package org.wildfly.ai.websocket;
 
 import dev.langchain4j.data.image.Image;
-import dev.langchain4j.data.message.AiMessage;
 import dev.langchain4j.data.message.ImageContent;
 import dev.langchain4j.data.message.TextContent;
 import dev.langchain4j.data.message.UserMessage;
-import dev.langchain4j.model.chat.ChatLanguageModel;
-import dev.langchain4j.model.output.Response;
+import dev.langchain4j.model.chat.ChatModel;
+import dev.langchain4j.model.chat.response.ChatResponse;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.ServletException;
@@ -35,7 +34,7 @@ public class ImageAnalyzerServlet extends HttpServlet {
 
     @Inject
     @Named(value = "ollama")
-    ChatLanguageModel chatModel;
+    ChatModel chatModel;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -46,10 +45,10 @@ public class ImageAnalyzerServlet extends HttpServlet {
         UserMessage userMessage = UserMessage.from(
                 TextContent.from("What do you see?"),
                 ImageContent.from(encodeBase64(file.getInputStream()), file.getContentType()));
-        Response<AiMessage> answer = chatModel.generate(userMessage);
+        ChatResponse answer = chatModel.chat(userMessage);
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(answer.content().text());
+        response.getWriter().write(answer.aiMessage().text());
     }
 
     private static String getFilename(Part part) {
