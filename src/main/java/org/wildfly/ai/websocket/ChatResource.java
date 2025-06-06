@@ -25,7 +25,7 @@ public class ChatResource {
     public String chatWithAssistant(@QueryParam("question") String question) {
         String answer;
         try {
-            answer = aiService.chat(question);
+            answer = aiService.chat(question, 0);
         } catch (Exception e) {
             e.printStackTrace();
             answer = "My failure reason is:\n\n" + e.getMessage();

@@ -35,10 +35,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jakartaee>10.0.0</jakartaee>
         <version.wildfly.maven.plugin>5.1.1.Final</version.wildfly.maven.plugin>
-        <version.wildfly.server>36.0.0.Final</version.wildfly.server>
-        <version.wildfly.ai.feature.pack>0.5.0</version.wildfly.ai.feature.pack>
-        <version.dev.langchain4j>1.0.0-rc1</version.dev.langchain4j>
-        <version.io.smallrye.llm>0.0.3</version.io.smallrye.llm>
+        <version.wildfly.server>36.0.1.Final</version.wildfly.server>
+        <version.wildfly.ai.feature.pack>0.6.0</version.wildfly.ai.feature.pack>
+        <version.dev.langchain4j>1.0.1</version.dev.langchain4j>
+        <version.io.smallrye.llm>0.0.6</version.io.smallrye.llm>
         <version.compiler.plugin>3.13.0</version.compiler.plugin>
         <version.war.plugin>3.4.0</version.war.plugin>
     </properties>
