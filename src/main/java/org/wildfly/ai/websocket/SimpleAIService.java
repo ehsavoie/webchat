@@ -4,10 +4,10 @@
  */
 package org.wildfly.ai.websocket;
 
+import dev.langchain4j.cdi.spi.RegisterAIService;
 import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
-import io.smallrye.llm.spi.RegisterAIService;
 import jakarta.enterprise.context.SessionScoped;
 
 
